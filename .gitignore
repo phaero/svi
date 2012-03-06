@@ -92,3 +92,7 @@ Makefile.in
 /doc/hacking.html
 /doc/*.pdf
 /doc/reference
+
+# waf files
+.lock-wafbuild
+po/.intlcache
