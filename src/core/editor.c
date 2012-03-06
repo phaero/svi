@@ -4630,8 +4630,8 @@ static void setup_sci_keys(ScintillaObject *sci)
 }
 
 
-#include "icons/16x16/classviewer-var.xpm"
-#include "icons/16x16/classviewer-method.xpm"
+#include "classviewer-var.xpm"
+#include "classviewer-method.xpm"
 
 /* Create new editor widget (scintilla).
  * @note The @c "sci-notify" signal is connected separately. */

@@ -34,7 +34,7 @@ import re, sys
 
 def get_function_names():
     names = []
-    filep = open('../src/core/plugins.c')
+    filep = open('../core/plugins.c')
     while 1:
         line = filep.readline()
         if line == "":
