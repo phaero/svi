@@ -499,7 +499,7 @@ def build(bld):
 	bld.install_files('${DOCDIR}/%simages' % html_dir, start_dir.ant_glob('*.png'), cwd=start_dir)
 	bld.install_as('${DOCDIR}/%s' % _uc_first('manual.txt', bld), 'doc/geany.txt')
 	bld.install_as('${DOCDIR}/%s%s' % (html_dir, html_name), 'doc/geany.html')
-	bld.install_as('${DOCDIR}/ScintillaLicense.txt', 'scintilla/License.txt')
+	bld.install_as('${DOCDIR}/ScintillaLicense.txt', 'src/scintilla/License.txt')
 	# Data
 	data_dir = 'geany'
 	start_dir = bld.path.find_dir('data')
