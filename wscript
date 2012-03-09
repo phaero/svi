@@ -34,7 +34,7 @@ out = 'bin'
 
 
 def configure(conf):
-	conf.check_waf_version(mini='1.6.1')
+	conf.check_waf_version(mini='1.6.11')
 
 	conf.load('compiler_c')
 
