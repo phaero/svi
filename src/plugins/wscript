@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+plugins/wscript
+
+Created by Johan Segolsson on 2012-03-08.
+Copyright (c) 2012 Johan Segolsson. All rights reserved.
+"""
+
+def build( bld ):
+	# geanyfunctions.h
+	bld.new_task_gen(
+			source = ['genapi.py', '../core/plugins.c'],
+			name = 'geanyfunctions.h',
+			before = ['c', 'cxx'],
+			cwd = '%s' % bld.path.abspath(),
+			rule = 'python genapi.py -q'
+		)
+
+	if bld.env['HAVE_PLUGINS'] == 1:
+		_create_plugin( bld, 'classbuilder')
+		_create_plugin( bld, 'demoplugin', False)
+		_create_plugin( bld, 'export')
+		_create_plugin( bld, 'filebrowser')
+		_create_plugin( bld, 'htmlchars')
+		_create_plugin( bld, 'saveactions')
+		_create_plugin( bld, 'splitwindow')
+
+	bld.install_files('${PREFIX}/include/geany', '''
+			geanyplugin.h
+			geanyfunctions.h
+		''')
+
+def _create_plugin( bld, plugin, install = True ):
+	if install:
+		instpath = '${LIBDIR}/geany'
+	else:
+		instpath = ''
+
+	bld.shlib(
+			target = plugin,
+			source = '%s.c' % plugin,
+			includes =  [
+					'..',
+				],
+			defines = 'G_LOG_DOMAIN="%s"' % plugin,
+			use = [
+					'GTK',
+					'GLIB',
+
+					'core_inc',
+					'scintilla',
+					'tagmanager',
+				],
+			install_path = instpath,
+		)

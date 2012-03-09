@@ -1,0 +1,109 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+wscript
+
+Created by Johan Segolsson on 2012-03-08.
+Copyright (c) 2012 Johan Segolsson. All rights reserved.
+"""
+
+def build( bld ):
+	bld.stlib(
+			source = [
+					'args.c',
+					'abc.c',
+					'actionscript.c',
+					'asm.c',
+					'basic.c',
+					'c.c',
+					'cobol.c',
+					'conf.c',
+					'css.c',
+					'ctags.c',
+					'diff.c',
+					'docbook.c',
+					'entry.c',
+					'fortran.c',
+					'get.c',
+					'haskell.c',
+					'haxe.c',
+					'html.c',
+					'js.c',
+					'keyword.c',
+					'latex.c',
+					'lregex.c',
+					'lua.c',
+					'make.c',
+					'markdown.c',
+					'matlab.c',
+					'nsis.c',
+					'nestlevel.c',
+					'objc.c',
+					'options.c',
+					'parse.c',
+					'pascal.c',
+					'r.c',
+					'perl.c',
+					'php.c',
+					'python.c',
+					'read.c',
+					'rest.c',
+					'ruby.c',
+					'sh.c',
+					'sort.c',
+					'sql.c',
+					'strlist.c',
+					'txt2tags.c',
+					'tcl.c',
+					'tm_file_entry.c',
+					'tm_project.c',
+					'tm_source_file.c',
+					'tm_symbol.c',
+					'tm_tag.c',
+					'tm_tagmanager.c',
+					'tm_work_object.c',
+					'tm_workspace.c',
+					'vhdl.c',
+					'verilog.c',
+					'vstring.c',
+				],
+			target = 'tagmanager',
+			includes = [
+					'..',
+					'.',
+					'include'
+				],
+			export_includes = [
+					'include',
+				],
+			defines = 'G_LOG_DOMAIN="Tagmanager"',
+			use = ['GTK', 'GLIB'],
+			install_path = None
+		) # do not install this library
+
+	bld.stlib(
+			source = 'mio/mio.c',
+			target = 'mio',
+			includes = [
+					'..',
+					'mio'
+				],
+			export_includes = [
+					'mio',
+				],
+			defines = 'G_LOG_DOMAIN="MIO"',
+			use = ['GTK', 'GLIB'],
+			install_path = None,
+		) # do not install this library
+
+	bld.install_files('${PREFIX}/include/geany/tagmanager', '''
+			include/tm_file_entry.h
+			include/tm_project.h
+			include/tm_source_file.h
+			include/tm_symbol.h
+			include/tm_tag.h
+			include/tm_tagmanager.h
+			include/tm_work_object.h
+			include/tm_workspace.h
+		''')
