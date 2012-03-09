@@ -11,6 +11,26 @@ Copyright (c) 2012 Johan Segolsson. All rights reserved.
 import os
 
 def build( bld ):
+	# Doxyfile
+	bld.new_task_gen(
+			features = 'subst',
+			source = 'Doxyfile.in',
+			target = 'Doxyfile',
+			install_path = None,
+			dct = {'VERSION' : bld.env['VERSION'] }
+		)
+
+	bld.new_task_gen(
+			features = 'subst',
+			source = 'geany.1.in',
+			target = 'geany.1',
+			dct = {
+				'VERSION': bld.env[ 'VERSION' ],
+				'GEANY_DATA_DIR': bld.env['DATADIR'] + '/geany'
+				},
+			install_path = '${MANDIR}/man1'
+		)
+
 	base_dir = '${DOCDIR}'
 	ext = ''
 	html_dir = 'html/'
