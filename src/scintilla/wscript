@@ -35,3 +35,5 @@ def build( bld ):
 			include/ScintillaWidget.h
 		''')
 
+	bld.install_as('${DOCDIR}/ScintillaLicense.txt', 'License.txt')
+

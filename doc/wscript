@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+doc/wscript
+
+Created by Johan Segolsson on 2012-03-09.
+Copyright (c) 2012 Johan Segolsson. All rights reserved.
+"""
+
+import os
+
+def build( bld ):
+	base_dir = '${DOCDIR}'
+	ext = ''
+	html_dir = 'html/'
+	html_name = 'index.html'
+
+	for filename in [ 'COPYING', 'README', 'TODO' ]:
+		destination_filename = '%s%s' % (filename, ext)
+		destination = os.path.join(base_dir, destination_filename)
+		bld.install_as(destination, filename)
+
+	start_dir = bld.path.find_dir('images')
+
+	bld.install_files('${DOCDIR}/%simages' % html_dir, start_dir.ant_glob('*.png'), cwd=start_dir)
+	bld.install_as('${DOCDIR}/manual.txt', 'geany.txt')
+	bld.install_as('${DOCDIR}/%s%s' % (html_dir, html_name), 'geany.html')

@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+wscript
+
+Created by Johan Segolsson on 2012-03-09.
+Copyright (c) 2012 Johan Segolsson. All rights reserved.
+"""
+
+def build( bld ):
+	data_dir = 'geany'
+	start_dir = bld.path.find_dir('.')
+
+	bld.install_as('${DATADIR}/%s/GPL-2' % data_dir, '../doc/COPYING')
+
+	bld.install_files('${DATADIR}/%s' % data_dir, start_dir.ant_glob('filetype*'), cwd=start_dir)
+	bld.install_files('${DATADIR}/%s' % data_dir, start_dir.ant_glob('*.tags'), cwd=start_dir)
+	bld.install_files('${DATADIR}/%s' % data_dir, 'geany.glade')
+	bld.install_files('${DATADIR}/%s' % data_dir, 'snippets.conf')
+	bld.install_files('${DATADIR}/%s' % data_dir, 'ui_toolbar.xml')
+
+	start_dir = bld.path.find_dir('colorschemes')
+	template_dest = '${DATADIR}/%s/colorschemes' % data_dir
+	bld.install_files(template_dest, start_dir.ant_glob('*'), cwd=start_dir)
+
+	start_dir = bld.path.find_dir('templates')
+	template_dest = '${DATADIR}/%s/templates' % data_dir
+	bld.install_files(template_dest, start_dir.ant_glob('**/*'), cwd=start_dir, relative_trick=True)

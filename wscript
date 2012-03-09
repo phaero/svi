@@ -165,6 +165,9 @@ def build(bld):
 		bld.add_post_fun(_post_install)
 
 	bld.recurse( 'src' )
+	bld.recurse( 'doc' )
+	bld.recurse( 'data' )
+	bld.recurse( 'icons' )
 
 	# Translations
 	if bld.env['INTLTOOL']:
@@ -228,49 +231,6 @@ def build(bld):
 			install_path = None,
 			dct = {'VERSION' : VERSION}
 		)
-
-	# Docs
-	base_dir = '${DOCDIR}'
-	ext = ''
-	html_dir = 'html/'
-	html_name = 'index.html'
-	for filename in 'COPYING README TODO'.split():
-		basename = _uc_first(filename, bld)
-		destination_filename = '%s%s' % (basename, ext)
-		destination = os.path.join(base_dir, destination_filename)
-		bld.install_as(destination, filename)
-
-	start_dir = bld.path.find_dir('doc/images')
-	bld.install_files('${DOCDIR}/%simages' % html_dir, start_dir.ant_glob('*.png'), cwd=start_dir)
-	bld.install_as('${DOCDIR}/%s' % _uc_first('manual.txt', bld), 'doc/geany.txt')
-	bld.install_as('${DOCDIR}/%s%s' % (html_dir, html_name), 'doc/geany.html')
-	bld.install_as('${DOCDIR}/ScintillaLicense.txt', 'src/scintilla/License.txt')
-	# Data
-	data_dir = 'geany'
-	start_dir = bld.path.find_dir('data')
-	bld.install_as('${DATADIR}/%s/GPL-2' % data_dir, 'COPYING')
-	bld.install_files('${DATADIR}/%s' % data_dir, start_dir.ant_glob('filetype*'), cwd=start_dir)
-	bld.install_files('${DATADIR}/%s' % data_dir, start_dir.ant_glob('*.tags'), cwd=start_dir)
-	bld.install_files('${DATADIR}/%s' % data_dir, 'data/geany.glade')
-	bld.install_files('${DATADIR}/%s' % data_dir, 'data/snippets.conf')
-	bld.install_files('${DATADIR}/%s' % data_dir, 'data/ui_toolbar.xml')
-	start_dir = bld.path.find_dir('data/colorschemes')
-	template_dest = '${DATADIR}/%s/colorschemes' % data_dir
-	bld.install_files(template_dest, start_dir.ant_glob('*'), cwd=start_dir)
-	start_dir = bld.path.find_dir('data/templates')
-	template_dest = '${DATADIR}/%s/templates' % data_dir
-	bld.install_files(template_dest, start_dir.ant_glob('**/*'), cwd=start_dir, relative_trick=True)
-	# Icons
-	icon_dest = '${DATADIR}/icons/hicolor/16x16/apps'
-	start_dir = bld.path.find_dir('icons/16x16')
-	bld.install_files(icon_dest, start_dir.ant_glob('*.png'), cwd=start_dir)
-
-	start_dir = bld.path.find_dir('icons/48x48')
-	icon_dest = '${DATADIR}/icons/hicolor/48x48/apps'
-	bld.install_files(icon_dest, start_dir.ant_glob('*.png'), cwd=start_dir)
-	start_dir = bld.path.find_dir('icons/scalable')
-	scalable_dest = '${DATADIR}/icons/hicolor/scalable/apps'
-	bld.install_files(scalable_dest, start_dir.ant_glob('*.svg'), cwd=start_dir)
 
 def distclean(ctx):
 	Scripting.distclean(ctx)
@@ -421,6 +381,3 @@ def _load_intltool_if_available(conf):
 			conf.env['LINGUAS'] = os.environ['LINGUAS']
 	except WafError:
 		raise
-
-def _uc_first(string, ctx):
-	return string
