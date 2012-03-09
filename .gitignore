@@ -1,23 +1,7 @@
 #-----------------------------------------------------------------------
 # /po/
 #-----------------------------------------------------------------------
-/po/ChangeLog.save
-/po/*.gmo
-/po/*.header
-/po/.intltool-merge-cache
 /po/LINGUAS
-/po/Makefile.in.in
-/po/Makevars
-/po/*.mo
-/po/*.pot
-/po/POTFILES
-/po/POTFILES.ignore
-/po/POTFILES.in.missing
-/po/POTFILES.in.noi18n
-/po/Rules-quot
-/po/*.sed
-/po/*.sin
-/po/stamp-it
 
 #-----------------------------------------------------------------------
 # /doc/
