@@ -218,7 +218,7 @@ def apidoc(ctx):
 		raise WafError('Generating API documentation failed')
 	# update hacking.html
 	cmd = _find_rst2html(ctx)
-	ctx.exec_command('%s  -stg --stylesheet=geany.css %s %s' % (cmd, '../HACKING', 'hacking.html'))
+	ctx.exec_command('%s  -stg --stylesheet=geany.css %s %s' % (cmd, 'HACKING', 'hacking.html'))
 	os.chdir('..')
 
 def htmldoc(ctx):
