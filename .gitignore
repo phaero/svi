@@ -30,6 +30,6 @@
 
 # waf files
 bin
-.lock-wafbuild
+.lock-waf*
 .waf-*
 po/.intlcache
