@@ -45,7 +45,6 @@
 #include "callbacks.h"
 #include "document.h"
 #include "filetypes.h"
-#include "win32.h"
 #include "sciwrappers.h"
 #include "support.h"
 #include "utils.h"
@@ -461,11 +460,6 @@ void dialogs_show_open_file(void)
 
 	SETPTR(initdir, utils_get_locale_from_utf8(initdir));
 
-#ifdef G_OS_WIN32
-	if (interface_prefs.use_native_windows_dialogs)
-		win32_show_document_open_dialog(GTK_WINDOW(main_widgets.window), _("Open File"), initdir);
-	else
-#endif
 	{
 		GtkWidget *dialog = create_open_file_dialog();
 		gint response;
@@ -700,22 +694,11 @@ gboolean dialogs_show_save_as()
 
 	g_return_val_if_fail(doc, FALSE);
 
-#ifdef G_OS_WIN32
-	if (interface_prefs.use_native_windows_dialogs)
-	{
-		gchar *utf8_name = win32_show_document_save_as_dialog(GTK_WINDOW(main_widgets.window),
-						_("Save File"), DOC_FILENAME(doc));
-		if (utf8_name != NULL)
-			result = handle_save_as(utf8_name, FALSE, FALSE);
-	}
-	else
-#endif
 	result = show_save_as_gtk(doc);
 	return result;
 }
 
 
-#ifndef G_OS_WIN32
 static void show_msgbox_dialog(GtkWidget *dialog, GtkMessageType type, GtkWindow *parent)
 {
 	const gchar *title;
@@ -746,7 +729,6 @@ static void show_msgbox_dialog(GtkWidget *dialog, GtkMessageType type, GtkWindow
 	gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_destroy(dialog);
 }
-#endif
 
 
 /**
@@ -761,9 +743,7 @@ static void show_msgbox_dialog(GtkWidget *dialog, GtkMessageType type, GtkWindow
  **/
 void dialogs_show_msgbox(GtkMessageType type, const gchar *text, ...)
 {
-#ifndef G_OS_WIN32
 	GtkWidget *dialog;
-#endif
 	gchar *string;
 	va_list args;
 	GtkWindow *parent = (main_status.main_window_realized) ? GTK_WINDOW(main_widgets.window) : NULL;
@@ -772,13 +752,9 @@ void dialogs_show_msgbox(GtkMessageType type, const gchar *text, ...)
 	string = g_strdup_vprintf(text, args);
 	va_end(args);
 
-#ifdef G_OS_WIN32
-	win32_message_dialog(GTK_WIDGET(parent), type, string);
-#else
 	dialog = gtk_message_dialog_new(parent, GTK_DIALOG_DESTROY_WITH_PARENT,
 			type, GTK_BUTTONS_OK, "%s", string);
 	show_msgbox_dialog(dialog, type, parent);
-#endif
 	g_free(string);
 }
 
@@ -786,18 +762,11 @@ void dialogs_show_msgbox(GtkMessageType type, const gchar *text, ...)
 void dialogs_show_msgbox_with_secondary(GtkMessageType type, const gchar *text, const gchar *secondary)
 {
 	GtkWindow *parent = (main_status.main_window_realized) ? GTK_WINDOW(main_widgets.window) : NULL;
-#ifdef G_OS_WIN32
-	/* put the two strings together because Windows message boxes don't support secondary texts */
-	gchar *string = g_strconcat(text, "\n", secondary, NULL);
-	win32_message_dialog(GTK_WIDGET(parent), type, string);
-	g_free(string);
-#else
 	GtkWidget *dialog;
 	dialog = gtk_message_dialog_new(parent, GTK_DIALOG_DESTROY_WITH_PARENT,
 			type, GTK_BUTTONS_OK, "%s", text);
 	gtk_message_dialog_format_secondary_text(GTK_MESSAGE_DIALOG(dialog), "%s", secondary);
 	show_msgbox_dialog(dialog, type, parent);
-#endif
 }
 
 
@@ -864,7 +833,6 @@ gboolean dialogs_show_unsaved_file(GeanyDocument *doc)
 }
 
 
-#ifndef G_OS_WIN32
 static void
 on_font_apply_button_clicked(GtkButton *button, gpointer user_data)
 {
@@ -891,15 +859,11 @@ on_font_cancel_button_clicked(GtkButton *button, gpointer user_data)
 {
 	gtk_widget_hide(ui_widgets.open_fontsel);
 }
-#endif
 
 
 /* This shows the font selection dialog to choose a font. */
 void dialogs_show_open_font()
 {
-#ifdef G_OS_WIN32
-	win32_show_font_dialog();
-#else
 
 	if (ui_widgets.open_fontsel == NULL)
 	{
@@ -928,7 +892,6 @@ void dialogs_show_open_font()
 	}
 	/* We make sure the dialog is visible. */
 	gtk_window_present(GTK_WINDOW(ui_widgets.open_fontsel));
-#endif
 }
 
 
@@ -1569,19 +1532,6 @@ static gint show_prompt(GtkWidget *parent,
 		response_3 = GTK_RESPONSE_YES;
 	}
 
-#ifdef G_OS_WIN32
-	/* our native dialog code doesn't support custom buttons */
-	if (btn_3 == (gchar*)GTK_STOCK_YES && btn_2 == (gchar*)GTK_STOCK_NO && btn_1 == NULL)
-	{
-		gchar *string = (extra_text == NULL) ? g_strdup(question_text) :
-			g_strconcat(question_text, "\n\n", extra_text, NULL);
-
-		ret = win32_message_dialog(parent, GTK_MESSAGE_QUESTION, string);
-		ret = ret ? response_3 : response_2;
-		g_free(string);
-		return ret;
-	}
-#endif
 	if (parent == NULL && main_status.main_window_realized)
 		parent = main_widgets.window;
 

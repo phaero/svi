@@ -56,19 +56,12 @@
 
 #ifdef HAVE_SOCKET
 
-#ifndef G_OS_WIN32
-# include <sys/time.h>
-# include <sys/types.h>
-# include <sys/socket.h>
-# include <sys/un.h>
-# include <netinet/in.h>
-# include <glib/gstdio.h>
-#else
-# include <gdk/gdkwin32.h>
-# include <windows.h>
-# include <winsock2.h>
-# include <ws2tcpip.h>
-#endif
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <netinet/in.h>
+#include <glib/gstdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -89,26 +82,15 @@
 
 
 
-#ifdef G_OS_WIN32
-#define REMOTE_CMD_PORT		49876
-#define SOCKET_IS_VALID(s)	((s) != INVALID_SOCKET)
-#else
 #define SOCKET_IS_VALID(s)	((s) >= 0)
 #define INVALID_SOCKET		(-1)
-#endif
 #define BUFFER_LENGTH 4096
 
 struct socket_info_struct socket_info;
 
 
-#ifdef G_OS_WIN32
-static gint socket_fd_connect_inet	(gushort port);
-static gint socket_fd_open_inet		(gushort port);
-static void socket_init_win32		(void);
-#else
 static gint socket_fd_connect_unix	(const gchar *path);
 static gint socket_fd_open_unix		(const gchar *path);
-#endif
 
 static gint socket_fd_write			(gint sock, const gchar *buf, gint len);
 static gint socket_fd_write_all		(gint sock, const gchar *buf, gint len);
@@ -172,7 +154,6 @@ static void send_open_command(gint sock, gint argc, gchar **argv)
 }
 
 
-#ifndef G_OS_WIN32
 static void remove_socket_link_full(void)
 {
 	gchar real_path[512];
@@ -190,7 +171,6 @@ static void remove_socket_link_full(void)
 	}
 	g_unlink(socket_info.file_name);
 }
-#endif
 
 
 static void socket_get_document_list(gint sock)
@@ -213,7 +193,6 @@ static void socket_get_document_list(gint sock)
 }
 
 
-#ifndef G_OS_WIN32
 static void check_socket_permissions(void)
 {
 	struct stat socket_stat;
@@ -233,7 +212,6 @@ static void check_socket_permissions(void)
 		}
 	}
 }
-#endif
 
 
 /* (Unix domain) socket support to replace the old FIFO code
@@ -243,34 +221,6 @@ static void check_socket_permissions(void)
 gint socket_init(gint argc, gchar **argv)
 {
 	gint sock;
-#ifdef G_OS_WIN32
-	HANDLE hmutex;
-	HWND hwnd;
-	socket_init_win32();
-	hmutex = CreateMutexA(NULL, FALSE, "Geany");
-	if (! hmutex)
-	{
-		geany_debug("cannot create Mutex\n");
-		return -1;
-	}
-	if (GetLastError() != ERROR_ALREADY_EXISTS)
-	{
-		/* To support multiple instances with different configuration directories (as we do on
-		 * non-Windows systems) we would need to use different port number s but it might be
-		 * difficult to get a port number which is unique for a configuration directory (path)
-		 * and which is unused. This port number has to be guessed by the first and new instance
-		 * and the only data is the configuration directory path.
-		 * For now we use one port number, that is we support only one instance at all. */
-		sock = socket_fd_open_inet(REMOTE_CMD_PORT);
-		if (sock < 0)
-			return 0;
-		return sock;
-	}
-
-	sock = socket_fd_connect_inet(REMOTE_CMD_PORT);
-	if (sock < 0)
-		return -1;
-#else
 	gchar *display_name = gdk_get_display();
 	gchar *hostname = utils_get_hostname();
 	gchar *p;
@@ -304,16 +254,9 @@ gint socket_init(gint argc, gchar **argv)
 		remove_socket_link_full(); /* deletes the socket file and the symlink */
 		return socket_fd_open_unix(socket_info.file_name);
 	}
-#endif
 
 	/* remote command mode, here we have another running instance and want to use it */
 
-#ifdef G_OS_WIN32
-	/* first we send a request to retrieve the window handle and focus the window */
-	socket_fd_write_all(sock, "window\n", 7);
-	if (socket_fd_read(sock, (gchar *)&hwnd, sizeof(hwnd)) == sizeof(hwnd))
-		SetForegroundWindow(hwnd);
-#endif
 	/* now we send the command line args */
 	if (argc > 1)
 	{
@@ -344,15 +287,11 @@ gint socket_finalize(void)
 		socket_info.read_ioc = NULL;
 	}
 
-#ifdef G_OS_WIN32
-	WSACleanup();
-#else
 	if (socket_info.file_name != NULL)
 	{
 		remove_socket_link_full(); /* deletes the socket file and the symlink */
 		g_free(socket_info.file_name);
 	}
-#endif
 
 	return 0;
 }
@@ -457,96 +396,8 @@ static gint socket_fd_open_unix(const gchar *path)
 
 static gint socket_fd_close(gint fd)
 {
-#ifdef G_OS_WIN32
-	return closesocket(fd);
-#else
 	return close(fd);
-#endif
 }
-
-
-#ifdef G_OS_WIN32
-static gint socket_fd_open_inet(gushort port)
-{
-	SOCKET sock;
-	struct sockaddr_in addr;
-	gchar val;
-
-	sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (G_UNLIKELY(! SOCKET_IS_VALID(sock)))
-	{
-		geany_debug("fd_open_inet(): socket() failed: %d\n", WSAGetLastError());
-		return -1;
-	}
-
-	val = 1;
-	if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val)) < 0)
-	{
-		perror("setsockopt");
-		socket_fd_close(sock);
-		return -1;
-	}
-
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(port);
-	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-
-	if (bind(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-	{
-		perror("bind");
-		socket_fd_close(sock);
-		return -1;
-	}
-
-	if (listen(sock, 1) < 0)
-	{
-		perror("listen");
-		socket_fd_close(sock);
-		return -1;
-	}
-
-	return sock;
-}
-
-
-static gint socket_fd_connect_inet(gushort port)
-{
-	SOCKET sock;
-	struct sockaddr_in addr;
-
-	sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (G_UNLIKELY(! SOCKET_IS_VALID(sock)))
-	{
-		geany_debug("fd_connect_inet(): socket() failed: %d\n", WSAGetLastError());
-		return -1;
-	}
-
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(port);
-	addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-
-	if (connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-	{
-		socket_fd_close(sock);
-		return -1;
-	}
-
-	return sock;
-}
-
-
-static void socket_init_win32(void)
-{
-	WSADATA wsadata;
-
-	if (WSAStartup(MAKEWORD(2, 2), &wsadata) != NO_ERROR)
-		geany_debug("WSAStartup() failed\n");
-
-	return;
-}
-#endif
 
 
 static void handle_input_filename(const gchar *buf)
@@ -641,14 +492,6 @@ gboolean socket_lock_input_cb(GIOChannel *source, GIOCondition condition, gpoint
 				cl_options.goto_column = atoi(buf);
 			}
 		}
-#ifdef G_OS_WIN32
-		else if (strncmp(buf, "window", 6) == 0)
-		{
-			HWND hwnd = (HWND) gdk_win32_drawable_get_handle(
-				GDK_DRAWABLE(gtk_widget_get_window(window)));
-			socket_fd_write(sock, (gchar *)&hwnd, sizeof(hwnd));
-		}
-#endif
 	}
 
 	if (popup)
@@ -662,9 +505,6 @@ gboolean socket_lock_input_cb(GIOChannel *source, GIOCondition condition, gpoint
 			gdk_x11_get_server_time(gtk_widget_get_window(window)));
 #endif
 		gtk_window_present(GTK_WINDOW(window));
-#ifdef G_OS_WIN32
-		gdk_window_show(gtk_widget_get_window(window));
-#endif
 	}
 
 	socket_fd_close(sock);
@@ -711,11 +551,7 @@ static gint socket_fd_read(gint fd, gchar *buf, gint len)
 	if (socket_fd_check_io(fd, G_IO_IN) < 0)
 		return -1;
 
-#ifdef G_OS_WIN32
-	return recv(fd, buf, len, 0);
-#else
 	return read(fd, buf, len);
-#endif
 }
 
 
@@ -789,11 +625,7 @@ gint socket_fd_write(gint fd, const gchar *buf, gint len)
 	if (socket_fd_check_io(fd, G_IO_OUT) < 0)
 		return -1;
 
-#ifdef G_OS_WIN32
-	return send(fd, buf, len, 0);
-#else
 	return write(fd, buf, len);
-#endif
 }
 
 

@@ -31,10 +31,6 @@
 
 #include <gdk/gdkkeysyms.h>
 
-#ifdef G_OS_WIN32
-# include <windows.h>
-#endif
-
 GeanyPlugin *geany_plugin;
 GeanyData *geany_data;
 GeanyFunctions *geany_functions;
@@ -108,32 +104,13 @@ PluginCallback plugin_callbacks[] =
 };
 
 
-#ifdef G_OS_WIN32
-static gboolean win32_check_hidden(const gchar *filename)
-{
-	DWORD attrs;
-	static wchar_t w_filename[MAX_PATH];
-	MultiByteToWideChar(CP_UTF8, 0, filename, -1, w_filename, sizeof(w_filename));
-	attrs = GetFileAttributesW(w_filename);
-	if (attrs != INVALID_FILE_ATTRIBUTES && attrs & FILE_ATTRIBUTE_HIDDEN)
-		return TRUE;
-	return FALSE;
-}
-#endif
-
-
 /* Returns: whether name should be hidden. */
 static gboolean check_hidden(const gchar *filename, const gchar *base_name)
 {
 	gsize len;
 
-#ifdef G_OS_WIN32
-	if (win32_check_hidden(filename))
-		return TRUE;
-#else
 	if (base_name[0] == '.')
 		return TRUE;
-#endif
 
 	len = strlen(base_name);
 	return base_name[len - 1] == '~';

@@ -46,7 +46,6 @@
 #include "encodings.h"
 #include "images.c"
 #include "sidebar.h"
-#include "win32.h"
 #include "project.h"
 #include "editor.h"
 #include "plugins.h"
@@ -1752,7 +1751,6 @@ void ui_setup_open_button_callback(GtkWidget *open_btn, const gchar *title,
 }
 
 
-#ifndef G_OS_WIN32
 static gchar *run_file_chooser(const gchar *title, GtkFileChooserAction action,
 		const gchar *utf8_path)
 {
@@ -1788,7 +1786,6 @@ static gchar *run_file_chooser(const gchar *title, GtkFileChooserAction action,
 	gtk_widget_destroy(dialog);
 	return ret_path;
 }
-#endif
 
 
 static void ui_path_box_open_clicked(GtkButton *button, gpointer user_data)
@@ -1809,22 +1806,12 @@ static void ui_path_box_open_clicked(GtkButton *button, gpointer user_data)
 
 	if (action == GTK_FILE_CHOOSER_ACTION_OPEN)
 	{
-#ifdef G_OS_WIN32
-		utf8_path = win32_show_file_dialog(GTK_WINDOW(ui_widgets.prefs_dialog), title,
-						gtk_entry_get_text(GTK_ENTRY(entry)));
-#else
 		utf8_path = run_file_chooser(title, action, gtk_entry_get_text(GTK_ENTRY(entry)));
-#endif
 	}
 	else if (action == GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER)
 	{
 		gchar *path = g_path_get_dirname(gtk_entry_get_text(GTK_ENTRY(entry)));
-#ifdef G_OS_WIN32
-		utf8_path = win32_show_folder_dialog(ui_widgets.prefs_dialog, title,
-						gtk_entry_get_text(GTK_ENTRY(entry)));
-#else
 		utf8_path = run_file_chooser(title, action, path);
-#endif
 		g_free(path);
 	}
 

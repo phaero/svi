@@ -66,11 +66,7 @@
 		utils_get_setting_##type(sys, group, key, default_val)
 
 /* ignore the case of filenames and paths under WIN32, causes errors if not */
-#ifdef G_OS_WIN32
-#define utils_filenamecmp(a, b)	utils_str_casecmp((a), (b))
-#else
 #define utils_filenamecmp(a, b)	strcmp((a), (b))
-#endif
 
 
 /** Iterates all the items in @a array using pointers.

@@ -68,7 +68,6 @@
 #include "symbols.h"
 #include "highlighting.h"
 #include "navqueue.h"
-#include "win32.h"
 #include "search.h"
 #include "filetypesprivate.h"
 #include "project.h"
@@ -1096,12 +1095,7 @@ GeanyDocument *document_open_file_full(GeanyDocument *doc, const gchar *filename
 		/* filename must not be NULL when opening a file */
 		g_return_val_if_fail(filename, NULL);
 
-#ifdef G_OS_WIN32
-		/* if filename is a shortcut, try to resolve it */
-		locale_filename = win32_get_shortcut_target(filename);
-#else
 		locale_filename = g_strdup(filename);
-#endif
 		/* remove relative junk */
 		utils_tidy_path(locale_filename);
 

@@ -800,12 +800,7 @@ static GeanyFiletype *check_builtin_filenames(const gchar *utf8_filename)
 	gchar *path;
 	gboolean found = FALSE;
 
-#ifdef G_OS_WIN32
-	/* use lower case basename */
-	lfn = g_utf8_strdown(utf8_filename, -1);
-#else
 	lfn = g_strdup(utf8_filename);
-#endif
 	SETPTR(lfn, utils_get_locale_from_utf8(lfn));
 
 	path = g_build_filename(app->configdir, GEANY_FILEDEFS_SUBDIR, "filetypes.", NULL);
@@ -835,10 +830,6 @@ GeanyFiletype *filetypes_detect_from_extension(const gchar *utf8_filename)
 
 	/* to match against the basename of the file (because of Makefile*) */
 	base_filename = g_path_get_basename(utf8_filename);
-#ifdef G_OS_WIN32
-	/* use lower case basename */
-	SETPTR(base_filename, g_utf8_strdown(base_filename, -1));
-#endif
 
 	ft = filetypes_find(match_basename, base_filename);
 	if (ft == NULL)
@@ -1615,18 +1606,6 @@ gboolean filetypes_parse_error_message(GeanyFiletype *ft, const gchar *message,
 }
 
 
-#ifdef G_OS_WIN32
-static void convert_filetype_extensions_to_lower_case(gchar **patterns, gsize len)
-{
-	guint i;
-	for (i = 0; i < len; i++)
-	{
-		SETPTR(patterns[i], g_ascii_strdown(patterns[i], -1));
-	}
-}
-#endif
-
-
 static void read_extensions(GKeyFile *sysconfig, GKeyFile *userconfig)
 {
 	guint i;
@@ -1646,9 +1625,6 @@ static void read_extensions(GKeyFile *sysconfig, GKeyFile *userconfig)
 			list = g_new0(gchar*, 1);
 		filetypes[i]->pattern = list;
 
-#ifdef G_OS_WIN32
-		convert_filetype_extensions_to_lower_case(filetypes[i]->pattern, len);
-#endif
 	}
 }
 

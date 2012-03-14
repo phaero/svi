@@ -47,7 +47,6 @@
 #include "msgwindow.h"
 #include "keybindings.h"
 #include "templates.h"
-#include "win32.h"
 #include "dialogs.h"
 
 
@@ -888,7 +887,6 @@ void tools_word_count(void)
 /*
  * color dialog callbacks
  */
-#ifndef G_OS_WIN32
 static void
 on_color_cancel_button_clicked(GtkButton *button, gpointer user_data)
 {
@@ -913,15 +911,11 @@ on_color_ok_button_clicked(GtkButton *button, gpointer user_data)
 	editor_insert_color(doc->editor, hex);
 	g_free(hex);
 }
-#endif
 
 
 /* This shows the color selection dialog to choose a color. */
 void tools_color_chooser(const gchar *color)
 {
-#ifdef G_OS_WIN32
-	win32_show_color_dialog(color);
-#else
 	gchar *c = (gchar*) color;
 
 	if (ui_widgets.open_colorsel == NULL)
@@ -958,5 +952,4 @@ void tools_color_chooser(const gchar *color)
 
 	/* We make sure the dialog is visible. */
 	gtk_window_present(GTK_WINDOW(ui_widgets.open_colorsel));
-#endif
 }

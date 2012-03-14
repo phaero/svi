@@ -49,7 +49,6 @@
 #include "document.h"
 #include "filetypes.h"
 #include "dialogs.h"
-#include "win32.h"
 #include "project.h"
 #include "ui_utils.h"
 
@@ -68,10 +67,6 @@
  **/
 void utils_open_browser(const gchar *uri)
 {
-#ifdef G_OS_WIN32
-	g_return_if_fail(uri != NULL);
-	win32_open_browser(uri);
-#else
 	gboolean again = TRUE;
 
 	g_return_if_fail(uri != NULL);
@@ -96,7 +91,6 @@ void utils_open_browser(const gchar *uri)
 		}
 		g_free(cmdline);
 	}
-#endif
 }
 
 
@@ -630,9 +624,7 @@ gchar utils_brace_opposite(gchar ch)
 
 gchar *utils_get_hostname(void)
 {
-#ifdef G_OS_WIN32
-	return win32_get_hostname();
-#elif defined(HAVE_GETHOSTNAME)
+#if defined(HAVE_GETHOSTNAME)
 	gchar hostname[100];
 	if (gethostname(hostname, sizeof(hostname)) == 0)
 		return g_strdup(hostname);
@@ -655,18 +647,12 @@ gint utils_is_file_writable(const gchar *locale_filename)
 	else
 		file = g_strdup(locale_filename);
 
-#ifdef G_OS_WIN32
-	/* use _waccess on Windows, access() doesn't accept special characters */
-	ret = win32_check_write_permission(file);
-#else
-
 	/* access set also errno to "FILE NOT FOUND" even if locale_filename is writeable, so use
 	 * errno only when access() explicitly returns an error */
 	if (access(file, R_OK | W_OK) != 0)
 		ret = errno;
 	else
 		ret = 0;
-#endif
 	g_free(file);
 	return ret;
 }
@@ -1038,11 +1024,7 @@ GIOChannel *utils_set_up_io_channel(
 	GIOChannel *ioc;
 	/*const gchar *encoding;*/
 
-	#ifdef G_OS_WIN32
-	ioc = g_io_channel_win32_new_fd(fd);
-	#else
 	ioc = g_io_channel_unix_new(fd);
-	#endif
 
 	if (nblock)
 		g_io_channel_set_flags(ioc, G_IO_FLAG_NONBLOCK, NULL);
@@ -1266,11 +1248,6 @@ gboolean utils_wrap_string(gchar *string, gint wrapstart)
  **/
 gchar *utils_get_locale_from_utf8(const gchar *utf8_text)
 {
-#ifdef G_OS_WIN32
-	/* just do nothing on Windows platforms, this ifdef is just to prevent unwanted conversions
-	 * which would result in wrongly converted strings */
-	return g_strdup(utf8_text);
-#else
 	gchar *locale_text;
 
 	if (! utf8_text)
@@ -1279,7 +1256,6 @@ gchar *utils_get_locale_from_utf8(const gchar *utf8_text)
 	if (locale_text == NULL)
 		locale_text = g_strdup(utf8_text);
 	return locale_text;
-#endif
 }
 
 
@@ -1294,11 +1270,6 @@ gchar *utils_get_locale_from_utf8(const gchar *utf8_text)
  **/
 gchar *utils_get_utf8_from_locale(const gchar *locale_text)
 {
-#ifdef G_OS_WIN32
-	/* just do nothing on Windows platforms, this ifdef is just to prevent unwanted conversions
-	 * which would result in wrongly converted strings */
-	return g_strdup(locale_text);
-#else
 	gchar *utf8_text;
 
 	if (! locale_text)
@@ -1307,7 +1278,6 @@ gchar *utils_get_utf8_from_locale(const gchar *locale_text)
 	if (utf8_text == NULL)
 		utf8_text = g_strdup(locale_text);
 	return utf8_text;
-#endif
 }
 
 
@@ -1705,11 +1675,7 @@ gboolean utils_spawn_sync(const gchar *dir, gchar **argv, gchar **env, GSpawnFla
 	if (std_err)
 		*std_err = NULL;
 
-#ifdef G_OS_WIN32
-	result = win32_spawn(dir, argv, env, flags, std_out, std_err, exit_status, error);
-#else
 	result = g_spawn_sync(dir, argv, env, flags, NULL, NULL, std_out, std_err, exit_status, error);
-#endif
 
 	return result;
 }
@@ -1745,11 +1711,8 @@ gboolean utils_spawn_async(const gchar *dir, gchar **argv, gchar **env, GSpawnFl
 		return FALSE;
 	}
 
-#ifdef G_OS_WIN32
-	result = win32_spawn(dir, argv, env, flags, NULL, NULL, NULL, error);
-#else
 	result = g_spawn_async(dir, argv, env, flags, NULL, NULL, child_pid, error);
-#endif
+
 	return result;
 }
 
@@ -1804,7 +1767,6 @@ gboolean utils_is_remote_path(const gchar *path)
 	if (utils_is_uri(path) && strncmp(path, "file:", 5) != 0)
 		return TRUE;
 
-#ifndef G_OS_WIN32
 	{
 		static gchar *fuse_path = NULL;
 		static gsize len = 0;
@@ -1820,7 +1782,6 @@ gboolean utils_is_remote_path(const gchar *path)
 		 * versions (gvfs 1.1.1). */
 		return (strncmp(path, fuse_path, len) == 0);
 	}
-#endif
 
 	return FALSE;
 }
@@ -1842,10 +1803,6 @@ void utils_tidy_path(gchar *filename)
 	if (str->len >= 2 && strncmp(str->str, "\\\\", 2) == 0)
 		preserve_double_backslash = TRUE;
 
-#ifdef G_OS_WIN32
-	/* using MSYS we can get Unix-style separators */
-	utils_string_replace_all(str, "/", G_DIR_SEPARATOR_S);
-#endif
 	/* replace "/./" and "//" */
 	utils_string_replace_all(str, G_DIR_SEPARATOR_S "." G_DIR_SEPARATOR_S, G_DIR_SEPARATOR_S);
 	utils_string_replace_all(str, G_DIR_SEPARATOR_S G_DIR_SEPARATOR_S, G_DIR_SEPARATOR_S);
@@ -1956,14 +1913,8 @@ gchar *utils_get_help_url(const gchar *suffix)
 	gint skip;
 	gchar *uri;
 
-#ifdef G_OS_WIN32
-	skip = 8;
-	uri = g_strconcat("file:///", app->docdir, "/Manual.html", NULL);
-	g_strdelimit(uri, "\\", '/'); /* replace '\\' by '/' */
-#else
 	skip = 7;
 	uri = g_strconcat("file://", app->docdir, "/index.html", NULL);
-#endif
 
 	if (! g_file_test(uri + skip, G_FILE_TEST_IS_REGULAR))
 	{	/* fall back to online documentation if it is not found on the hard disk */

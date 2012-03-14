@@ -118,18 +118,8 @@ static void handler_log(const gchar *domain, GLogLevelFlags level, const gchar *
 
 	if (G_LIKELY(app != NULL && app->debug_mode))
 	{
-#ifdef G_OS_WIN32
-		/* On Windows g_log_default_handler() is not enough, we need to print it
-		 * explicitly on stderr for the console window */
-		/** TODO this can be removed if/when we remove the console window on Windows */
-		if (domain != NULL)
-			fprintf(stderr, "%s: %s\n", domain, msg);
-		else
-			fprintf(stderr, "%s\n", msg);
-#else
 		/* print the message as usual on stdout/stderr */
 		g_log_default_handler(domain, level, msg, data);
-#endif
 	}
 
 	time_str = utils_get_current_time_string();

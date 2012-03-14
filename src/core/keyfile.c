@@ -67,11 +67,7 @@
 #define GEANY_MSGWIN_HEIGHT				208
 #define GEANY_DISK_CHECK_TIMEOUT		30
 #define GEANY_DEFAULT_TOOLS_MAKE		"make"
-#ifdef G_OS_WIN32
-#define GEANY_DEFAULT_TOOLS_TERMINAL	"cmd.exe"
-#else
 #define GEANY_DEFAULT_TOOLS_TERMINAL	"xterm"
-#endif
 #define GEANY_DEFAULT_TOOLS_BROWSER		"firefox"
 #define GEANY_DEFAULT_TOOLS_PRINTCMD	"lpr"
 #define GEANY_DEFAULT_TOOLS_GREP		"grep"
@@ -886,12 +882,7 @@ static void load_dialog_prefs(GKeyFile *config)
 
 	/* printing */
 	tmp_string2 = g_find_program_in_path(GEANY_DEFAULT_TOOLS_PRINTCMD);
-#ifdef G_OS_WIN32
-	/* single quote paths on Win32 for g_spawn_command_line_async */
-	tmp_string = g_strconcat("'", tmp_string2, "' '%f'", NULL);
-#else
 	tmp_string = g_strconcat(tmp_string2, " %f", NULL);
-#endif
 	printing_prefs.external_print_cmd = utils_get_setting_string(config, "printing", "print_cmd", tmp_string);
 	g_free(tmp_string);
 	g_free(tmp_string2);

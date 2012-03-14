@@ -1,10 +1,4 @@
 /*
- *      build.c - this file is part of Geany, a fast and lightweight IDE
- *
- *      Copyright 2005-2011 Enrico Tröger <enrico(dot)troeger(at)uvena(dot)de>
- *      Copyright 2006-2011 Nick Treleaven <nick(dot)treleaven(at)btinternet(dot)com>
- *      Copyright 2009 Lex Trotman <elextr(at)gmail(dot)com>
- *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
  *      the Free Software Foundation; either version 2 of the License, or
@@ -38,13 +32,9 @@
 #include <errno.h>
 #include <glib/gstdio.h>
 
-#ifdef G_OS_UNIX
-# include <sys/types.h>
-# include <sys/wait.h>
-# include <signal.h>
-#else
-# include <windows.h>
-#endif
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <signal.h>
 
 #include "prefs.h"
 #include "support.h"
@@ -58,14 +48,8 @@
 #include "vte.h"
 #include "project.h"
 #include "editor.h"
-#include "win32.h"
 #include "toolbar.h"
 #include "geanymenubuttonaction.h"
-
-/* g_spawn_async_with_pipes doesn't work on Windows */
-#ifdef G_OS_WIN32
-#define SYNC_SPAWN
-#endif
 
 /* Number of editor indicators to draw - limited as this can affect performance */
 #define GEANY_BUILD_ERR_HIGHLIGHT_MAX 50
@@ -83,11 +67,7 @@ typedef struct RunInfo
 
 static RunInfo *run_info;
 
-#ifdef G_OS_WIN32
-static const gchar RUN_SCRIPT_CMD[] = "geany_run_script.bat";
-#else
 static const gchar RUN_SCRIPT_CMD[] = "./geany_run_script.sh";
-#endif
 
 /* pack group (<8) and command (<32) into a user_data pointer */
 #define GRP_CMD_TO_POINTER(grp, cmd) GUINT_TO_POINTER((((grp)&7) << 5) | ((cmd)&0x1f))
@@ -792,15 +772,11 @@ static GPid build_spawn_cmd(GeanyDocument *doc, const gchar *cmd, const gchar *d
 
 	cmd_string = g_strdup(cmd);
 
-#ifdef G_OS_WIN32
-	argv = g_strsplit(cmd_string, " ", 0);
-#else
 	argv = g_new0(gchar *, 4);
 	argv[0] = g_strdup("/bin/sh");
 	argv[1] = g_strdup("-c");
 	argv[2] = cmd_string;
 	argv[3] = NULL;
-#endif
 
 	utf8_cmd_string = utils_get_utf8_from_locale(cmd_string);
 	utf8_working_dir = NZV(dir) ? g_strdup(dir) : g_path_get_dirname(doc->file_name);
@@ -891,9 +867,6 @@ static gchar *prepare_run_script(GeanyDocument *doc, gchar **vte_cmd_nonscript, 
 		cmd_working_dir = "%d";
 	working_dir = build_replace_placeholder(doc, cmd_working_dir); /* in utf-8 */
 
-	/* only test whether working dir exists, don't change it or else Windows support will break
-	 * (gspawn-win32-helper.exe is used by GLib and must be in $PATH which means current working
-	 *  dir where geany.exe was started from, so we can't change it) */
 	if (!NZV(working_dir) || ! g_file_test(working_dir, G_FILE_TEST_EXISTS) ||
 		! g_file_test(working_dir, G_FILE_TEST_IS_DIR))
 	{
@@ -1030,22 +1003,8 @@ static GPid build_run_cmd(GeanyDocument *doc, guint cmdindex)
 		{
 			argv[i] = g_strdup(term_argv[i]);
 		}
-#ifdef G_OS_WIN32
-		/* command line arguments only for cmd.exe */
-		if (strstr(argv[0], "cmd.exe") != NULL)
-		{
-			argv[term_argv_len] = g_strdup("/Q /C");
-			argv[term_argv_len + 1] = g_strdup(RUN_SCRIPT_CMD);
-		}
-		else
-		{
-			argv[term_argv_len] = g_strdup(RUN_SCRIPT_CMD);
-			argv[term_argv_len + 1] = NULL;
-		}
-#else
 		argv[term_argv_len   ]  = g_strdup("-e");
 		argv[term_argv_len + 1] = g_strconcat("/bin/sh ", RUN_SCRIPT_CMD, NULL);
-#endif
 		argv[term_argv_len + 2] = NULL;
 
 		if (! g_spawn_async(working_dir, argv, NULL, G_SPAWN_DO_NOT_REAP_CHILD,
@@ -1220,9 +1179,6 @@ static void build_exit_cb(GPid child_pid, gint status, gpointer user_data)
 {
 	gboolean failure = FALSE;
 
-#ifdef G_OS_WIN32
-	failure = status;
-#else
 	if (WIFEXITED(status))
 	{
 		if (WEXITSTATUS(status) != EXIT_SUCCESS)
@@ -1237,7 +1193,6 @@ static void build_exit_cb(GPid child_pid, gint status, gpointer user_data)
 	{	/* any other failure occured */
 		failure = TRUE;
 	}
-#endif
 	show_build_result_message(failure);
 
 	utils_beep();
@@ -1277,9 +1232,6 @@ static gboolean build_create_shellscript(const gchar *fname, const gchar *cmd, g
 	FILE *fp;
 	gchar *str;
 	gboolean success = TRUE;
-#ifdef G_OS_WIN32
-	gchar *expanded_cmd;
-#endif
 
 	fp = g_fopen(fname, "w");
 	if (! fp)
@@ -1287,18 +1239,11 @@ static gboolean build_create_shellscript(const gchar *fname, const gchar *cmd, g
 		set_file_error_from_errno(error, errno, "Failed to create file");
 		return FALSE;
 	}
-#ifdef G_OS_WIN32
-	/* Expand environment variables like %blah%. */
-	expanded_cmd = win32_expand_environment_variables(cmd);
-	str = g_strdup_printf("%s\n\n%s\ndel \"%%0\"\n\npause\n", expanded_cmd, (autoclose) ? "" : "pause");
-	g_free(expanded_cmd);
-#else
 	str = g_strdup_printf(
 		"#!/bin/sh\n\nrm $0\n\n%s\n\necho \"\n\n------------------\n(program exited with code: $?)\" \
 		\n\n%s\n", cmd, (autoclose) ? "" :
 		"\necho \"Press return to continue\"\n#to be more compatible with shells like "
 			"dash\ndummy_var=\"\"\nread dummy_var");
-#endif
 
 	if (fputs(str, fp) < 0)
 	{
@@ -1797,16 +1742,8 @@ static void kill_process(GPid *pid)
 	 * ignore because the main process get it too, it is declared to ignore in main.c. */
 	gint result;
 
-#ifdef G_OS_WIN32
-	g_return_if_fail(*pid != NULL);
-	result = TerminateProcess(*pid, 0);
-	/* TerminateProcess() returns TRUE on success, for the check below we have to convert
-	 * it to FALSE (and vice versa) */
-	result = ! result;
-#else
 	g_return_if_fail(*pid > 1);
 	result = kill(*pid, SIGQUIT);
-#endif
 
 	if (result != 0)
 		ui_set_statusbar(TRUE, _("Process could not be stopped (%s)."), g_strerror(errno));

@@ -369,11 +369,7 @@ static GtkWidget *create_dialog(void)
 
 	g_snprintf(buffer, sizeof(buffer),
 		_("Some of the many contributors (for a more detailed list, see the file %s):"),
-#ifdef G_OS_WIN32
-			"Thanks.txt"
-#else
 			"THANKS"
-#endif
 		);
 	label = geany_wrap_label_new(buffer);
 	gtk_table_attach(GTK_TABLE(table), label, 0, 2, row, row + 1,

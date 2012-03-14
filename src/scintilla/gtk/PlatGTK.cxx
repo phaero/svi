@@ -2912,19 +2912,11 @@ ColourDesired Platform::ChromeHighlight() {
 }
 
 const char *Platform::DefaultFont() {
-#ifdef G_OS_WIN32
-	return "Lucida Console";
-#else
 	return "!Sans";
-#endif
 }
 
 int Platform::DefaultFontSize() {
-#ifdef G_OS_WIN32
-	return 10;
-#else
 	return 12;
-#endif
 }
 
 unsigned int Platform::DoubleClickTime() {

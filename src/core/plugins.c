@@ -57,7 +57,6 @@
 #include "stash.h"
 #include "symbols.h"
 #include "keyfile.h"
-#include "win32.h"
 #include "pluginutils.h"
 #include "pluginprivate.h"
 
@@ -957,17 +956,7 @@ load_plugins_from_path(const gchar *path)
 
 static gchar *get_plugin_path(void)
 {
-#ifdef G_OS_WIN32
-	gchar *path;
-	gchar *install_dir = win32_get_installation_dir();
-
-	path = g_strconcat(install_dir, "\\lib", NULL);
-	g_free(install_dir);
-
-	return path;
-#else
 	return g_strconcat(GEANY_LIBDIR, G_DIR_SEPARATOR_S "geany", NULL);
-#endif
 }
 
 

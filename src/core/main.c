@@ -51,7 +51,6 @@
 #include "document.h"
 #include "filetypes.h"
 #include "keyfile.h"
-#include "win32.h"
 #include "msgwindow.h"
 #include "dialogs.h"
 #include "templates.h"
@@ -370,19 +369,8 @@ static void setup_paths(void)
 	gchar *doc_dir;
 
 	/* set paths */
-#ifdef G_OS_WIN32
-	/* use the installation directory(the one where geany.exe is located) as the base for the
-	 * documentation and data files */
-	gchar *install_dir = win32_get_installation_dir();
-
-	data_dir = g_strconcat(install_dir, "\\data", NULL); /* e.g. C:\Program Files\geany\data */
-	doc_dir = g_strconcat(install_dir, "\\doc", NULL);
-
-	g_free(install_dir);
-#else
 	data_dir = g_strconcat(GEANY_DATADIR, "/geany", NULL); /* e.g. /usr/share/geany */
 	doc_dir = g_strconcat(GEANY_DOCDIR, "/html", NULL);
-#endif
 
 	/* convert path names to locale encoding */
 	app->datadir = utils_get_locale_from_utf8(data_dir);
@@ -445,16 +433,7 @@ void main_locale_init(const gchar *locale_dir, const gchar *package)
 	setlocale(LC_ALL, "");
 #endif
 
-#ifdef G_OS_WIN32
-	{
-		gchar *install_dir = win32_get_installation_dir();
-		/* e.g. C:\Program Files\geany\lib\locale */
-		l_locale_dir = g_strconcat(install_dir, "\\share\\locale", NULL);
-		g_free(install_dir);
-	}
-#else
 	l_locale_dir = g_strdup(locale_dir);
-#endif
 
 	bindtextdomain(package, l_locale_dir);
 	bind_textdomain_codeset(package, "UTF-8");
@@ -478,19 +457,6 @@ static void print_filetypes(void)
 	}
 	filetypes_free_types();
 }
-
-
-static void wait_for_input_on_windows(void)
-{
-#ifdef G_OS_WIN32
-	if (verbose_mode)
-	{
-		geany_debug("Press any key to continue");
-		getchar();
-	}
-#endif
-}
-
 
 static void parse_command_line_options(gint *argc, gchar ***argv)
 {
@@ -529,10 +495,6 @@ static void parse_command_line_options(gint *argc, gchar ***argv)
 
 	app->debug_mode = verbose_mode;
 
-#ifdef G_OS_WIN32
-	win32_init_debug_code();
-#endif
-
 	if (show_version)
 	{
 		printf(PACKAGE " %s (", main_get_version_string());
@@ -542,7 +504,6 @@ static void parse_command_line_options(gint *argc, gchar ***argv)
 			GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION,
 			GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION);
 		printf(")\n");
-		wait_for_input_on_windows();
 		exit(0);
 	}
 
@@ -552,7 +513,6 @@ static void parse_command_line_options(gint *argc, gchar ***argv)
 		printf("%s\n", GEANY_DATADIR);
 		printf("%s\n", GEANY_LIBDIR);
 		printf("%s\n", GEANY_LOCALEDIR);
-		wait_for_input_on_windows();
 		exit(0);
 	}
 
@@ -573,14 +533,12 @@ static void parse_command_line_options(gint *argc, gchar ***argv)
 		filetypes_init_types();
 		ret = symbols_generate_global_tags(*argc, *argv, ! no_preprocessing);
 		filetypes_free_types();
-		wait_for_input_on_windows();
 		exit(ret);
 	}
 
 	if (ft_names)
 	{
 		print_filetypes();
-		wait_for_input_on_windows();
 		exit(0);
 	}
 
@@ -615,7 +573,6 @@ static gint create_config_dir(void)
 
 	if (! g_file_test(app->configdir, G_FILE_TEST_EXISTS))
 	{
-#ifndef G_OS_WIN32
 		/* if we are *not* using an alternate config directory, we check whether the old one
 		 * in ~/.geany still exists and try to move it */
 		if (alternate_config == NULL)
@@ -653,7 +610,6 @@ static gint create_config_dir(void)
 			}
 			g_free(old_dir);
 		}
-#endif
 		geany_debug("creating config directory %s", app->configdir);
 		saved_errno = utils_mkdir(app->configdir, TRUE);
 	}
@@ -812,10 +768,6 @@ static void open_cl_files(gint argc, gchar **argv)
 			continue;
 		}
 
-#ifdef G_OS_WIN32
-		/* It seems argv elements are encoded in CP1252 on a German Windows */
-		SETPTR(filename, g_locale_to_utf8(filename, -1, NULL, NULL, NULL));
-#endif
 		if (filename && ! main_handle_filename(filename))
 		{
 			const gchar *msg = _("Could not find file '%s'.");
@@ -1109,11 +1061,6 @@ gint main(gint argc, gchar **argv)
 	build_menu_update(doc);
 	sidebar_update_tag_list(doc, FALSE);
 
-#ifdef G_OS_WIN32
-	/* Manually realise the main window to be able to set the position but don't show it.
-	 * We don't set the position after showing the window to avoid flickering. */
-	gtk_widget_realize(main_widgets.window);
-#endif
 	setup_window_position();
 
 	/* finally show the window */
@@ -1130,17 +1077,6 @@ gint main(gint argc, gchar **argv)
 		socket_info.read_ioc = g_io_channel_unix_new(socket_info.lock_socket);
 		socket_info.lock_socket_tag = g_io_add_watch(socket_info.read_ioc,
 						G_IO_IN | G_IO_PRI | G_IO_ERR, socket_lock_input_cb, main_widgets.window);
-	}
-#endif
-
-#ifdef G_OS_WIN32
-	{
-		gchar *dir;
-		/* On Windows, change the working directory to the Geany installation path to not lock
-		 * the directory of a file passed as command line argument (see bug #2626124). */
-		dir = win32_get_installation_dir();
-		win32_set_working_directory(dir);
-		g_free(dir);
 	}
 #endif
 

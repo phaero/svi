@@ -40,7 +40,6 @@
 #include "msgwindow.h"
 #include "main.h"
 #include "keyfile.h"
-#include "win32.h"
 #include "build.h"
 #include "editor.h"
 #include "stash.h"
@@ -226,7 +225,6 @@ gboolean project_load_file_with_session(const gchar *locale_file_name)
 }
 
 
-#ifndef G_OS_WIN32
 static void run_open_dialog(GtkDialog *dialog)
 {
 	while (gtk_dialog_run(dialog) == GTK_RESPONSE_ACCEPT)
@@ -248,33 +246,15 @@ static void run_open_dialog(GtkDialog *dialog)
 		break;
 	}
 }
-#endif
 
 
 void project_open(void)
 {
 	const gchar *dir = local_prefs.project_file_path;
-#ifdef G_OS_WIN32
-	gchar *file;
-#else
 	GtkWidget *dialog;
 	GtkFileFilter *filter;
 	gchar *locale_path;
-#endif
 	if (! project_ask_close()) return;
-
-#ifdef G_OS_WIN32
-	file = win32_show_project_open_dialog(main_widgets.window, _("Open Project"), dir, FALSE, TRUE);
-	if (file != NULL)
-	{
-		/* try to load the config */
-		if (! project_load_file_with_session(file))
-		{
-			SHOW_ERR1(_("Project file \"%s\" could not be loaded."), file);
-		}
-		g_free(file);
-	}
-#else
 
 	dialog = gtk_file_chooser_dialog_new(_("Open Project"), GTK_WINDOW(main_widgets.window),
 			GTK_FILE_CHOOSER_ACTION_OPEN,
@@ -312,7 +292,6 @@ void project_open(void)
 	gtk_widget_show_all(dialog);
 	run_open_dialog(GTK_DIALOG(dialog));
 	gtk_widget_destroy(GTK_WIDGET(dialog));
-#endif
 }
 
 
@@ -794,7 +773,6 @@ static gboolean update_config(const PropertyDialogElements *e, gboolean new_proj
 }
 
 
-#ifndef G_OS_WIN32
 static void run_dialog(GtkWidget *dialog, GtkWidget *entry)
 {
 	/* set filename in the file chooser dialog */
@@ -845,20 +823,9 @@ static void run_dialog(GtkWidget *dialog, GtkWidget *entry)
 	}
 	gtk_widget_destroy(dialog);
 }
-#endif
-
 
 static void on_file_save_button_clicked(GtkButton *button, PropertyDialogElements *e)
 {
-#ifdef G_OS_WIN32
-	gchar *path = win32_show_project_open_dialog(e->dialog, _("Choose Project Filename"),
-						gtk_entry_get_text(GTK_ENTRY(e->file_name)), TRUE, TRUE);
-	if (path != NULL)
-	{
-		gtk_entry_set_text(GTK_ENTRY(e->file_name), path);
-		g_free(path);
-	}
-#else
 	GtkWidget *dialog;
 
 	/* initialise the dialog */
@@ -873,7 +840,6 @@ static void on_file_save_button_clicked(GtkButton *button, PropertyDialogElement
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 
 	run_dialog(dialog, e->file_name);
-#endif
 }
 
 

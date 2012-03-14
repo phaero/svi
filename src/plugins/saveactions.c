@@ -369,12 +369,6 @@ void plugin_init(GeanyData *data)
 
 static void backupcopy_dir_button_clicked_cb(GtkButton *button, gpointer item)
 {
-	/** TODO add win32_show_pref_file_dialog to the plugin API and use it **/
-/*
-#ifdef G_OS_WIN32
-	win32_show_pref_file_dialog(item);
-#else
-*/
 	GtkWidget *dialog;
 	gchar *text;
 

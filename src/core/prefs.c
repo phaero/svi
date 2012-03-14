@@ -60,7 +60,6 @@
 #include "stash.h"
 #include "keyfile.h"
 #include "filetypes.h"
-#include "win32.h"
 
 #ifdef HAVE_VTE
 # include "vte.h"
@@ -1691,9 +1690,7 @@ void prefs_show_dialog(void)
 		vte_append_preferences_tab();
 #endif
 
-#ifndef G_OS_WIN32
 		gtk_widget_hide(ui_lookup_widget(ui_widgets.prefs_dialog, "check_native_windows_dialogs"));
-#endif
 		ui_setup_open_button_callback(ui_lookup_widget(ui_widgets.prefs_dialog, "startup_path_button"), NULL,
 			GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER, GTK_ENTRY(ui_lookup_widget(ui_widgets.prefs_dialog, "startup_path_entry")));
 		ui_setup_open_button_callback(ui_lookup_widget(ui_widgets.prefs_dialog, "extra_plugin_path_button"), NULL,

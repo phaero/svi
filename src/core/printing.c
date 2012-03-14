@@ -882,13 +882,9 @@ static void print_external(GeanyDocument *doc)
 	{
 		GError *error = NULL;
 
-#ifdef G_OS_WIN32
-		gchar *tmp_cmdline = g_strdup(cmdline);
-#else
 		/* /bin/sh -c emulates the system() call and makes complex commands possible
 		 * but only needed on non-win32 systems due to the lack of win32's shell capabilities */
 		gchar *tmp_cmdline = g_strconcat("/bin/sh -c \"", cmdline, "\"", NULL);
-#endif
 
 		if (! g_spawn_command_line_async(tmp_cmdline, &error))
 		{

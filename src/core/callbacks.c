@@ -1612,11 +1612,7 @@ G_MODULE_EXPORT void on_menu_open_selected_file1_activate(GtkMenuItem *menuitem,
 	gchar *sel = NULL;
 	const gchar *wc;
 
-#ifdef G_OS_WIN32
-	wc = GEANY_WORDCHARS "./-" "\\";
-#else
 	wc = GEANY_WORDCHARS "./-";
-#endif
 
 	g_return_if_fail(doc != NULL);
 
