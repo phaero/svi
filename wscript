@@ -122,6 +122,8 @@ def configure(conf):
 	conf.env.append_value('CXXFLAGS',
 		['-DNDEBUG', '-DGTK', '-DSCI_LEXER', '-DG_THREADS_IMPL_NONE'])
 
+	conf.env.append_value( 'CFLAGS', [ '-Wall', '-Wextra', '-std=c99', '-pedantic', ] )
+
 	# summary
 	Logs.pprint('BLUE', 'Summary:')
 	conf.msg('Install Geany ' + VERSION + ' in', conf.env['PREFIX'])
