@@ -45,12 +45,10 @@ def build( bld ):
 			'toolbar.c',
 			'tools.c',
 			'sidebar.c',
+			'vte.c',
 			'ui_utils.c',
 			'utils.c',
 		]
-
-	if bld.env['HAVE_VTE'] == 1:
-		_sources.append('vte.c')
 
 	bld(
 			name = 'core_inc',
@@ -61,7 +59,7 @@ def build( bld ):
 	# c++ even if we don't use c++ in this application.
 	bld.program(
 			features = [ 'c', 'cxx', 'cxxprogram' ],
-			target = 'geany',
+			target = 'svi',
 			source = _sources,
 			includes = [
 					'..',

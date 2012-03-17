@@ -25,8 +25,8 @@ from waflib.Errors import ConfigurationError, WafError
 from waflib.TaskGen import feature
 
 
-APPNAME = 'geany'
-VERSION = '1.22'
+APPNAME = 'svi'
+VERSION = '0.0.1'
 
 top = '.'
 out = 'bin'
