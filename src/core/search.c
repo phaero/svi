@@ -348,7 +348,7 @@ static GtkWidget *add_find_checkboxes(GtkDialog *dialog)
 }
 
 
-static void send_find_dialog_response(GtkButton *button, gpointer user_data)
+static void send_find_dialog_response(GtkButton* UP(button), gpointer user_data)
 {
 	gtk_dialog_response(GTK_DIALOG(find_dlg.dialog), GPOINTER_TO_INT(user_data));
 }
@@ -590,14 +590,14 @@ void search_show_find_dialog(void)
 }
 
 
-static void send_replace_dialog_response(GtkButton *button, gpointer user_data)
+static void send_replace_dialog_response(GtkButton* UP(button), gpointer user_data)
 {
 	gtk_dialog_response(GTK_DIALOG(replace_dlg.dialog), GPOINTER_TO_INT(user_data));
 }
 
 
 static gboolean
-on_widget_key_pressed_set_focus(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
+on_widget_key_pressed_set_focus(GtkWidget* UP(widget), GdkEventKey *event, gpointer user_data)
 {
 	if (event->keyval == GDK_Tab)
 	{
@@ -1177,7 +1177,7 @@ gint search_mark_all(GeanyDocument *doc, const gchar *search_text, gint flags)
 
 
 static void
-on_find_entry_activate(GtkEntry *entry, gpointer user_data)
+on_find_entry_activate(GtkEntry *entry, gpointer UP(user_data))
 {
 	on_find_dialog_response(NULL, GEANY_RESPONSE_FIND,
 				ui_lookup_widget(GTK_WIDGET(entry), "entry"));
@@ -1185,7 +1185,7 @@ on_find_entry_activate(GtkEntry *entry, gpointer user_data)
 
 
 static void
-on_find_entry_activate_backward(GtkEntry *entry, gpointer user_data)
+on_find_entry_activate_backward(GtkEntry *entry, gpointer UP(user_data))
 {
 	/* can't search backwards with a regexp */
 	if (search_data.flags & SCFIND_REGEXP)
@@ -1204,7 +1204,7 @@ on_find_entry_activate_backward(GtkEntry *entry, gpointer user_data)
 
 
 static void
-on_find_dialog_response(GtkDialog *dialog, gint response, gpointer user_data)
+on_find_dialog_response(GtkDialog* UP(dialog), gint response, gpointer user_data)
 {
 	gtk_window_get_position(GTK_WINDOW(find_dlg.dialog),
 		&find_dlg.position[0], &find_dlg.position[1]);
@@ -1292,14 +1292,14 @@ on_find_dialog_response(GtkDialog *dialog, gint response, gpointer user_data)
 
 
 static void
-on_replace_entry_activate(GtkEntry *entry, gpointer user_data)
+on_replace_entry_activate(GtkEntry* UP(entry), gpointer UP(user_data))
 {
 	on_replace_dialog_response(NULL, GEANY_RESPONSE_REPLACE, NULL);
 }
 
 
 static void replace_in_session(GeanyDocument *doc,
-		gint search_flags_re, gboolean search_replace_escape_re,
+		gint search_flags_re, gboolean UP(search_replace_escape_re),
 		const gchar *find, const gchar *replace,
 		const gchar *original_find, const gchar *original_replace)
 {
@@ -1337,7 +1337,7 @@ static void replace_in_session(GeanyDocument *doc,
 
 
 static void
-on_replace_dialog_response(GtkDialog *dialog, gint response, gpointer user_data)
+on_replace_dialog_response(GtkDialog *dialog, gint response, gpointer UP(user_data))
 {
 	GeanyDocument *doc = document_get_current();
 	gint search_flags_re;
@@ -1497,7 +1497,7 @@ static GString *get_grep_options(void)
 
 
 static void
-on_find_in_files_dialog_response(GtkDialog *dialog, gint response,
+on_find_in_files_dialog_response(GtkDialog* UP(dialog), gint response,
 		G_GNUC_UNUSED gpointer user_data)
 {
 	gtk_window_get_position(GTK_WINDOW(fif_dlg.dialog), &fif_dlg.position[0], &fif_dlg.position[1]);
@@ -1782,7 +1782,7 @@ static gboolean search_read_io_stderr(GIOChannel *source, GIOCondition condition
 }
 
 
-static void search_close_pid(GPid child_pid, gint status, gpointer user_data)
+static void search_close_pid(GPid child_pid, gint status, gpointer UP(user_data))
 {
 	/* TODO: port this also to Windows API */
 #ifdef G_OS_UNIX

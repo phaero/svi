@@ -120,7 +120,8 @@ void msgwin_finalize(void)
 }
 
 
-static gboolean on_msgwin_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer data)
+static gboolean on_msgwin_key_press_event(GtkWidget* UP(widget),
+		GdkEventKey *event, gpointer data)
 {
 	gboolean enter_or_return = ui_is_keyval_enter_or_return(event->keyval);
 
@@ -429,8 +430,7 @@ void msgwin_status_add(const gchar *format, ...)
 }
 
 
-static void
-on_message_treeview_clear_activate(GtkMenuItem *menuitem, gpointer user_data)
+static void on_message_treeview_clear_activate(GtkMenuItem* UP(menuitem), gpointer user_data)
 {
 	gint tabnum = GPOINTER_TO_INT(user_data);
 
@@ -438,8 +438,8 @@ on_message_treeview_clear_activate(GtkMenuItem *menuitem, gpointer user_data)
 }
 
 
-static void
-on_compiler_treeview_copy_activate(GtkMenuItem *menuitem, gpointer user_data)
+static void on_compiler_treeview_copy_activate(GtkMenuItem* UP(menuitem),
+		gpointer user_data)
 {
 	GtkWidget *tv = NULL;
 	GtkTreeSelection *selection;
@@ -480,7 +480,8 @@ on_compiler_treeview_copy_activate(GtkMenuItem *menuitem, gpointer user_data)
 }
 
 
-static void on_compiler_treeview_copy_all_activate(GtkMenuItem *menuitem, gpointer user_data)
+static void on_compiler_treeview_copy_all_activate(GtkMenuItem* UP(menuitem),
+		gpointer user_data)
 {
 	GtkListStore *store = msgwindow.store_compiler;
 	GtkTreeIter iter;
@@ -534,8 +535,8 @@ static void on_compiler_treeview_copy_all_activate(GtkMenuItem *menuitem, gpoint
 }
 
 
-static void
-on_hide_message_window(GtkMenuItem *menuitem, gpointer user_data)
+static void on_hide_message_window(GtkMenuItem* UP(menuitem),
+		gpointer UP(user_data))
 {
 	msgwin_show_hide(FALSE);
 }
@@ -576,8 +577,8 @@ static GtkWidget *create_message_popup_menu(gint type)
 	return message_popup_menu;
 }
 
-
-static void on_scribble_populate(GtkTextView *textview, GtkMenu *arg1, gpointer user_data)
+static void on_scribble_populate(GtkTextView* UP(textview), GtkMenu *arg1,
+		gpointer UP(user_data))
 {
 	msgwin_menu_add_common_items(arg1);
 }
@@ -1104,9 +1105,8 @@ gboolean msgwin_goto_messages_file_line(gboolean focus_editor)
 	return ret;
 }
 
-
-static gboolean on_msgwin_button_press_event(GtkWidget *widget, GdkEventButton *event,
-											 gpointer user_data)
+static gboolean on_msgwin_button_press_event(GtkWidget* UP(widget),
+		GdkEventButton *event, gpointer user_data)
 {
 	/* user_data might be NULL, GPOINTER_TO_INT returns 0 if called with NULL */
 	gboolean double_click = event->type == GDK_2BUTTON_PRESS;

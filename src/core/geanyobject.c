@@ -35,6 +35,7 @@
 
 #include "geany.h"
 #include "geanyobject.h"
+#include "utils.h"
 
 /* extern in geany.h */
 GObject	*geany_object;
@@ -55,8 +56,9 @@ G_DEFINE_TYPE(GeanyObject, geany_object, G_TYPE_OBJECT)
 
 
 
-static void geany_cclosure_marshal_VOID__STRING_INT_POINTER(GClosure *closure, GValue *ret_val,
-				guint n_param_vals, const GValue *param_values, gpointer hint, gpointer mdata)
+static void geany_cclosure_marshal_VOID__STRING_INT_POINTER(GClosure *closure,
+		GValue* UP(ret_val), guint n_param_vals, const GValue *param_values,
+		gpointer UP(hint), gpointer mdata)
 {
 	typedef gboolean (*GeanyMarshalFunc_VOID__STRING_INT_POINTER)
 		(gpointer data1, gconstpointer arg_1, gint arg_2, gpointer arg_3, gpointer data2);
@@ -86,8 +88,9 @@ static void geany_cclosure_marshal_VOID__STRING_INT_POINTER(GClosure *closure, G
 }
 
 
-static void geany_cclosure_marshal_VOID__POINTER_POINTER(GClosure *closure, GValue *ret_val,
-				guint n_param_vals, const GValue *param_values, gpointer hint, gpointer mdata)
+static void geany_cclosure_marshal_VOID__POINTER_POINTER(GClosure *closure,
+		GValue* UP(ret_val), guint n_param_vals, const GValue *param_values,
+		gpointer UP(hint), gpointer mdata)
 {
 	typedef gboolean (*GeanyMarshalFunc_VOID__POINTER_POINTER)
 		(gpointer data1, gconstpointer arg_1, gconstpointer arg_2, gpointer data2);
@@ -116,8 +119,8 @@ static void geany_cclosure_marshal_VOID__POINTER_POINTER(GClosure *closure, GVal
 }
 
 
-static gboolean boolean_handled_accumulator(GSignalInvocationHint *ihint, GValue *return_accu,
-											const GValue *handler_return, gpointer dummy)
+static gboolean boolean_handled_accumulator(GSignalInvocationHint* UP(ihint),
+		GValue* return_accu, const GValue *handler_return, gpointer UP(dummy))
 {
 	gboolean continue_emission, signal_handled;
 
@@ -368,7 +371,7 @@ static void geany_object_class_init(GeanyObjectClass *klass)
 }
 
 
-static void geany_object_init(GeanyObject *self)
+static void geany_object_init(GeanyObject* UP(self))
 {
 	/* nothing to do */
 }

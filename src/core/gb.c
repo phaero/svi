@@ -30,6 +30,8 @@
 #include <unistd.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
 
+#include "utils.h"
+
 #define MAX_PICS 10
 #define LOOP_DELAY 200000	/* micro seconds */
 
@@ -197,7 +199,7 @@ static GtkWidget *create_help_dialog(GtkWindow *parent)
 }
 
 
-static gint destroydialog(GtkWidget *widget, gpointer data)
+static gint destroydialog(GtkWidget* UP(widget), gpointer data)
 {
 	gtk_widget_destroy(GTK_WIDGET(data));
 	return (FALSE);
@@ -231,7 +233,7 @@ static void ensure_different_icons(gushort *a, gushort *b, gushort *c)
 }
 
 
-static void arm_clicked_cb(GtkButton *button, gpointer user_data)
+static void arm_clicked_cb(GtkButton* UP(button), gpointer UP(user_data))
 {
 	gushort erg_a, erg_b, erg_c, l, m, n;
 	gint i, loops;
@@ -293,7 +295,7 @@ static void arm_clicked_cb(GtkButton *button, gpointer user_data)
 }
 
 
-static void help_clicked_cb(GtkButton *button, gpointer user_data)
+static void help_clicked_cb(GtkButton* UP(button), gpointer user_data)
 {
 	GtkWidget *dialog = create_help_dialog(user_data);
 	GtkTextBuffer *buffer;
@@ -320,7 +322,7 @@ static void init_strings(void)
 }
 
 
-static void update_labels(GtkWidget *window, gint init, gint won)
+static void update_labels(GtkWidget* UP(window), gint init, gint won)
 {
 	gchar pts[50];
 
@@ -1718,7 +1720,7 @@ static void init_images(void)
 
 
 /* main exit function */
-gint gb_destroyapp(GtkWidget *widget, gpointer gdata)
+gint gb_destroyapp(GtkWidget* UP(widget), gpointer UP(gdata))
 {
 	if (is_running)
 		return TRUE;
@@ -1745,7 +1747,8 @@ static void gb_start_bandit(GtkWindow *parent)
 }
 
 
-static gboolean gb_on_key_pressed(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
+static gboolean gb_on_key_pressed(GtkWidget *widget, GdkEventKey *event,
+		gpointer UP(user_data))
 {
 	static gchar text[] = "00000";
 

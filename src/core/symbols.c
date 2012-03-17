@@ -1100,7 +1100,7 @@ static const gchar *get_parent_name(const TMTag *tag, filetype_id ft_id)
 }
 
 
-static GtkTreeIter *get_tag_type_iter(TMTagType tag_type, filetype_id ft_id)
+static GtkTreeIter *get_tag_type_iter(TMTagType tag_type, filetype_id UP(ft_id))
 {
 	GtkTreeIter *iter = NULL;
 
@@ -2067,7 +2067,7 @@ gint symbols_get_current_function(GeanyDocument *doc, const gchar **tagname)
 }
 
 
-static void on_symbol_tree_sort_clicked(GtkMenuItem *menuitem, gpointer user_data)
+static void on_symbol_tree_sort_clicked(GtkMenuItem* UP(menuitem), gpointer user_data)
 {
 	gint sort_mode = GPOINTER_TO_INT(user_data);
 	GeanyDocument *doc = document_get_current();
@@ -2080,8 +2080,8 @@ static void on_symbol_tree_sort_clicked(GtkMenuItem *menuitem, gpointer user_dat
 }
 
 
-static void on_symbol_tree_menu_show(GtkWidget *widget,
-		gpointer user_data)
+static void on_symbol_tree_menu_show(GtkWidget* UP(widget),
+		gpointer UP(user_data))
 {
 	GeanyDocument *doc = document_get_current();
 	gboolean enable;
@@ -2106,7 +2106,7 @@ static void on_symbol_tree_menu_show(GtkWidget *widget,
 }
 
 
-static void on_expand_collapse(GtkWidget *widget, gpointer user_data)
+static void on_expand_collapse(GtkWidget* UP(widget), gpointer user_data)
 {
 	gboolean expand = GPOINTER_TO_INT(user_data);
 	GeanyDocument *doc = document_get_current();

@@ -307,7 +307,7 @@ static void update_ui(void)
 }
 
 
-static void remove_foreach_project_filetype(gpointer data, gpointer user_data)
+static void remove_foreach_project_filetype(gpointer data, gpointer UP(user_data))
 {
 	GeanyFiletype *ft = data;
 	if (ft != NULL)
@@ -384,9 +384,8 @@ void project_close(gboolean open_default)
 /* Shows the file chooser dialog when base path button is clicked
  * FIXME: this should be connected in Glade but 3.8.1 has a bug
  * where it won't pass any objects as user data (#588824). */
-G_MODULE_EXPORT void
-on_project_properties_base_path_button_clicked(GtkWidget *button,
-	GtkWidget *base_path_entry)
+G_MODULE_EXPORT void on_project_properties_base_path_button_clicked(
+		GtkWidget* UP(button), GtkWidget *base_path_entry)
 {
 	GtkWidget *dialog;
 
@@ -824,7 +823,8 @@ static void run_dialog(GtkWidget *dialog, GtkWidget *entry)
 	gtk_widget_destroy(dialog);
 }
 
-static void on_file_save_button_clicked(GtkButton *button, PropertyDialogElements *e)
+static void on_file_save_button_clicked(GtkButton* UP(button),
+		PropertyDialogElements *e)
 {
 	GtkWidget *dialog;
 
@@ -883,7 +883,8 @@ static void on_name_entry_changed(GtkEditable *editable, PropertyDialogElements 
 }
 
 
-static void on_entries_changed(GtkEditable *editable, PropertyDialogElements *e)
+static void on_entries_changed(GtkEditable* UP(editable),
+		PropertyDialogElements* UP(e))
 {
 	entries_modified = TRUE;
 }

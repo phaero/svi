@@ -110,7 +110,8 @@ static void geany_wrap_label_set_wrap_width(GtkWidget *widget, gint width)
 
 
 /* updates the wrap width when the label text changes */
-static void geany_wrap_label_label_notify(GObject *object, GParamSpec *pspec, gpointer data)
+static void geany_wrap_label_label_notify(GObject *object, GParamSpec* UP(pspec),
+		gpointer UP(data))
 {
 	GeanyWrapLabelPrivate *priv = GEANY_WRAP_LABEL_GET_PRIVATE(object);
 

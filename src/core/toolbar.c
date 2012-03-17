@@ -316,7 +316,7 @@ static GtkWidget *toolbar_reload(const gchar *markup)
 }
 
 
-static void toolbar_notify_style_cb(GObject *object, GParamSpec *arg1, gpointer data)
+static void toolbar_notify_style_cb(GObject* UP(object), GParamSpec *arg1, gpointer UP(data))
 {
 	const gchar *arg_name = g_param_spec_get_name(arg1);
 	gint value;
@@ -608,10 +608,9 @@ enum
 	TB_EDITOR_COLS_MAX
 };
 
-static void tb_editor_handler_start_element(GMarkupParseContext *context, const gchar *element_name,
-											const gchar **attribute_names,
-											const gchar **attribute_values, gpointer data,
-											GError **error)
+static void tb_editor_handler_start_element(GMarkupParseContext* UP(context),
+		const gchar *element_name, const gchar **attribute_names,
+		const gchar **attribute_values, gpointer data, GError** UP(error))
 {
 	gint i;
 	GSList **actions = data;
@@ -705,7 +704,7 @@ static void tb_editor_free_path(TBEditorWidget *tbw)
 }
 
 
-static void tb_editor_btn_remove_clicked_cb(GtkWidget *button, TBEditorWidget *tbw)
+static void tb_editor_btn_remove_clicked_cb(GtkWidget* UP(button), TBEditorWidget *tbw)
 {
 	GtkTreeModel *model_used;
 	GtkTreeSelection *selection_used;
@@ -731,7 +730,7 @@ static void tb_editor_btn_remove_clicked_cb(GtkWidget *button, TBEditorWidget *t
 }
 
 
-static void tb_editor_btn_add_clicked_cb(GtkWidget *button, TBEditorWidget *tbw)
+static void tb_editor_btn_add_clicked_cb(GtkWidget* UP(button), TBEditorWidget *tbw)
 {
 	GtkTreeModel *model_available;
 	GtkTreeSelection *selection_available, *selection_used;
@@ -763,8 +762,9 @@ static void tb_editor_btn_add_clicked_cb(GtkWidget *button, TBEditorWidget *tbw)
 }
 
 
-static gboolean tb_editor_drag_motion_cb(GtkWidget *widget, GdkDragContext *drag_context,
-										 gint x, gint y, guint ltime, TBEditorWidget *tbw)
+static gboolean tb_editor_drag_motion_cb(GtkWidget *widget,
+		GdkDragContext* UP(drag_context), gint UP(x), gint UP(y), guint UP(ltime),
+		TBEditorWidget *tbw)
 {
 	if (tbw->last_drag_path != NULL)
 		gtk_tree_path_free(tbw->last_drag_path);
@@ -775,9 +775,9 @@ static gboolean tb_editor_drag_motion_cb(GtkWidget *widget, GdkDragContext *drag
 }
 
 
-static void tb_editor_drag_data_get_cb(GtkWidget *widget, GdkDragContext *context,
-									   GtkSelectionData *data, guint info, guint ltime,
-									   TBEditorWidget *tbw)
+static void tb_editor_drag_data_get_cb(GtkWidget *widget,
+		GdkDragContext* UP(context), GtkSelectionData *data, guint UP(info),
+		guint UP(ltime), TBEditorWidget *tbw)
 {
 	GtkTreeIter iter;
 	GtkTreeSelection *selection;
@@ -802,9 +802,9 @@ static void tb_editor_drag_data_get_cb(GtkWidget *widget, GdkDragContext *contex
 }
 
 
-static void tb_editor_drag_data_rcvd_cb(GtkWidget *widget, GdkDragContext *context,
-										gint x, gint y, GtkSelectionData *data, guint info,
-										guint ltime, TBEditorWidget *tbw)
+static void tb_editor_drag_data_rcvd_cb(GtkWidget *widget,
+		GdkDragContext *context, gint UP(x), gint UP(y), GtkSelectionData *data,
+		guint UP(info), guint ltime, TBEditorWidget *tbw)
 {
 	GtkTreeView *tree = GTK_TREE_VIEW(widget);
 	gboolean del = FALSE;
@@ -857,8 +857,8 @@ static void tb_editor_drag_data_rcvd_cb(GtkWidget *widget, GdkDragContext *conte
 }
 
 
-static gboolean tb_editor_foreach_used(GtkTreeModel *model, GtkTreePath *path,
-									   GtkTreeIter *iter, gpointer data)
+static gboolean tb_editor_foreach_used(GtkTreeModel *model,
+		GtkTreePath* UP(path), GtkTreeIter *iter, gpointer data)
 {
 	gchar *action_name;
 
@@ -905,15 +905,15 @@ at http://www.geany.org/manual/current/index.html#customizing-the-toolbar.\n-->\
 }
 
 
-static void tb_editor_available_items_changed_cb(GtkTreeModel *model, GtkTreePath *arg1,
-												 GtkTreeIter *arg2, TBEditorWidget *tbw)
+static void tb_editor_available_items_changed_cb(GtkTreeModel* UP(model),
+		GtkTreePath* UP(arg1), GtkTreeIter* UP(arg2), TBEditorWidget *tbw)
 {
 	tb_editor_write_markup(tbw);
 }
 
 
-static void tb_editor_available_items_deleted_cb(GtkTreeModel *model, GtkTreePath *arg1,
-												 TBEditorWidget *tbw)
+static void tb_editor_available_items_deleted_cb(GtkTreeModel* UP(model),
+		GtkTreePath* UP(arg1), TBEditorWidget *tbw)
 {
 	tb_editor_write_markup(tbw);
 }

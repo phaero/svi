@@ -326,7 +326,8 @@ static void add_page_header(DocInfo *dinfo, cairo_t *cr, gint width, gint page_n
 }
 
 
-static void custom_widget_apply(GtkPrintOperation *operation, GtkWidget *widget, gpointer user_data)
+static void custom_widget_apply(GtkPrintOperation* UP(operation), GtkWidget* UP(widget),
+		gpointer user_data)
 {
 	PrintWidgets *w = user_data;
 
@@ -424,7 +425,8 @@ static GtkWidget *create_custom_widget(GtkPrintOperation *operation, gpointer us
 }
 
 
-static void end_print(GtkPrintOperation *operation, GtkPrintContext *context, gpointer user_data)
+static void end_print(GtkPrintOperation* UP(operation), GtkPrintContext* UP(context),
+		gpointer user_data)
 {
 	DocInfo *dinfo = user_data;
 
@@ -502,8 +504,8 @@ static void begin_print(GtkPrintOperation *operation, GtkPrintContext *context, 
 }
 
 
-static void draw_page(GtkPrintOperation *operation, GtkPrintContext *context,
-					  gint page_nr, gpointer user_data)
+static void draw_page(GtkPrintOperation* UP(operation), GtkPrintContext *context,
+		gint page_nr, gpointer user_data)
 {
 	DocInfo *dinfo = user_data;
 	GeanyEditor *editor;

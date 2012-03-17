@@ -975,7 +975,7 @@ gchar *utils_make_human_readable_str(guint64 size, gulong block_size,
  * Basically, it is the same as strtod() would do, but it does not understand hex colour values,
  * before ANSI-C99. With with_route set, it takes strings of the format "#00ff00".
  * Returns -1 on failure. */
-gint utils_strtod(const gchar *source, gchar **end, gboolean with_route)
+gint utils_strtod(const gchar *source, gchar** UP(end), gboolean with_route)
 {
 	guint red, green, blue, offset = 0;
 
@@ -1655,7 +1655,7 @@ static gboolean check_error(GError **error)
  *  @return @c TRUE on success, @c FALSE if an error was set.
  **/
 gboolean utils_spawn_sync(const gchar *dir, gchar **argv, gchar **env, GSpawnFlags flags,
-						  GSpawnChildSetupFunc child_setup, gpointer user_data, gchar **std_out,
+						  GSpawnChildSetupFunc UP(child_setup), gpointer UP(user_data), gchar **std_out,
 						  gchar **std_err, gint *exit_status, GError **error)
 {
 	gboolean result;
@@ -1697,7 +1697,7 @@ gboolean utils_spawn_sync(const gchar *dir, gchar **argv, gchar **env, GSpawnFla
  *  @return @c TRUE on success, @c FALSE if an error was set.
  **/
 gboolean utils_spawn_async(const gchar *dir, gchar **argv, gchar **env, GSpawnFlags flags,
-						   GSpawnChildSetupFunc child_setup, gpointer user_data, GPid *child_pid,
+						   GSpawnChildSetupFunc UP(child_setup), gpointer UP(user_data), GPid *child_pid,
 						   GError **error)
 {
 	gboolean result;

@@ -143,7 +143,7 @@ enum
 };
 
 
-static void kb_tree_view_change_button_clicked_cb(GtkWidget *button, gpointer data)
+static void kb_tree_view_change_button_clicked_cb(GtkWidget* UP(button), gpointer UP(data))
 {
 	GtkTreeModel *model;
 	GtkTreeSelection *selection;
@@ -199,7 +199,7 @@ static void kb_tree_view_change_button_clicked_cb(GtkWidget *button, gpointer da
 }
 
 
-static void kb_expand_collapse_cb(GtkWidget *item, gpointer user_data)
+static void kb_expand_collapse_cb(GtkWidget* UP(item), gpointer user_data)
 {
 	if (user_data != NULL)
 		gtk_tree_view_expand_all(tree);
@@ -247,15 +247,15 @@ static void kb_show_popup_menu(GtkWidget *widget, GdkEventButton *event)
 }
 
 
-static gboolean kb_popup_menu_cb(GtkWidget *widget, gpointer data)
+static gboolean kb_popup_menu_cb(GtkWidget *widget, gpointer UP(data))
 {
 	kb_show_popup_menu(widget, NULL);
 	return TRUE;
 }
 
 
-static gboolean kb_tree_view_button_press_event_cb(GtkWidget *widget, GdkEventButton *event,
-												   gpointer user_data)
+static gboolean kb_tree_view_button_press_event_cb(GtkWidget *widget,
+		GdkEventButton *event, gpointer UP(user_data))
 {
 	if (event->button == 3 && event->type == GDK_BUTTON_PRESS)
 	{
@@ -809,7 +809,7 @@ static void kb_update(void)
  */
 /* note: new 'simple' prefs should use Stash code in keyfile.c */
 static void
-on_prefs_dialog_response(GtkDialog *dialog, gint response, gpointer user_data)
+on_prefs_dialog_response(GtkDialog *dialog, gint response, gpointer UP(user_data))
 {
 	if (response == GTK_RESPONSE_OK || response == GTK_RESPONSE_APPLY)
 	{
@@ -1256,7 +1256,7 @@ on_prefs_dialog_response(GtkDialog *dialog, gint response, gpointer user_data)
 }
 
 
-static void on_color_button_choose_cb(GtkColorButton *widget, gpointer user_data)
+static void on_color_button_choose_cb(GtkColorButton *widget, gpointer UP(user_data))
 {
 	GdkColor color;
 
@@ -1329,8 +1329,8 @@ static void kb_change_iter_shortcut(GtkTreeIter *iter, const gchar *new_text)
 }
 
 
-static void kb_cell_edited_cb(GtkCellRendererText *cellrenderertext,
-		gchar *path, gchar *new_text, gpointer user_data)
+static void kb_cell_edited_cb(GtkCellRendererText* UP(cellrenderertext),
+		gchar *path, gchar *new_text, gpointer UP(user_data))
 {
 	if (path != NULL && new_text != NULL)
 	{
@@ -1345,7 +1345,8 @@ static void kb_cell_edited_cb(GtkCellRendererText *cellrenderertext,
 }
 
 
-static gboolean kb_grab_key_dialog_key_press_cb(GtkWidget *dialog, GdkEventKey *event, gpointer user_data)
+static gboolean kb_grab_key_dialog_key_press_cb(GtkWidget* UP(dialog), GdkEventKey *event,
+		gpointer UP(user_data))
 {
 	gchar *str;
 	guint state;
@@ -1452,7 +1453,7 @@ static gboolean kb_find_duplicate(GtkWidget *parent, GtkTreeIter *old_iter,
 }
 
 
-static void on_toolbar_show_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+static void on_toolbar_show_toggled(GtkToggleButton *togglebutton, gpointer UP(user_data))
 {
 	gboolean sens = gtk_toggle_button_get_active(togglebutton);
 
@@ -1467,7 +1468,7 @@ static void on_toolbar_show_toggled(GtkToggleButton *togglebutton, gpointer user
 }
 
 
-static void on_show_notebook_tabs_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+static void on_show_notebook_tabs_toggled(GtkToggleButton *togglebutton, gpointer UP(user_data))
 {
 	gboolean sens = gtk_toggle_button_get_active(togglebutton);
 
@@ -1477,7 +1478,7 @@ static void on_show_notebook_tabs_toggled(GtkToggleButton *togglebutton, gpointe
 }
 
 
-static void on_use_folding_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+static void on_use_folding_toggled(GtkToggleButton *togglebutton, gpointer UP(user_data))
 {
 	gboolean sens = gtk_toggle_button_get_active(togglebutton);
 
@@ -1485,7 +1486,7 @@ static void on_use_folding_toggled(GtkToggleButton *togglebutton, gpointer user_
 }
 
 
-static void on_enable_plugins_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+static void on_enable_plugins_toggled(GtkToggleButton *togglebutton, gpointer UP(user_data))
 {
 	gboolean sens = gtk_toggle_button_get_active(togglebutton);
 
@@ -1494,7 +1495,7 @@ static void on_enable_plugins_toggled(GtkToggleButton *togglebutton, gpointer us
 }
 
 
-static void on_open_encoding_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+static void on_open_encoding_toggled(GtkToggleButton *togglebutton, gpointer UP(user_data))
 {
 	gboolean sens = gtk_toggle_button_get_active(togglebutton);
 
@@ -1503,7 +1504,7 @@ static void on_open_encoding_toggled(GtkToggleButton *togglebutton, gpointer use
 }
 
 
-static void on_sidebar_visible_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+static void on_sidebar_visible_toggled(GtkToggleButton *togglebutton, gpointer UP(user_data))
 {
 	gboolean sens = gtk_toggle_button_get_active(togglebutton);
 
@@ -1512,7 +1513,7 @@ static void on_sidebar_visible_toggled(GtkToggleButton *togglebutton, gpointer u
 }
 
 
-static void on_prefs_print_radio_button_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+static void on_prefs_print_radio_button_toggled(GtkToggleButton *togglebutton, gpointer UP(user_data))
 {
 	gboolean sens = gtk_toggle_button_get_active(togglebutton);
 
@@ -1521,7 +1522,7 @@ static void on_prefs_print_radio_button_toggled(GtkToggleButton *togglebutton, g
 }
 
 
-static void on_prefs_print_page_header_toggled(GtkToggleButton *togglebutton, gpointer user_data)
+static void on_prefs_print_page_header_toggled(GtkToggleButton *togglebutton, gpointer UP(user_data))
 {
 	gboolean sens = gtk_toggle_button_get_active(togglebutton);
 
@@ -1574,8 +1575,8 @@ static void open_preferences_help(void)
 }
 
 
-static gboolean prefs_dialog_key_press_response_cb(GtkWidget *dialog, GdkEventKey *event,
-												   gpointer data)
+static gboolean prefs_dialog_key_press_response_cb(GtkWidget* UP(dialog),
+		GdkEventKey *event, gpointer UP(data))
 {
 	GeanyKeyBinding *kb = keybindings_lookup_item(GEANY_KEY_GROUP_HELP, GEANY_KEYS_HELP_HELP);
 

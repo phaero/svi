@@ -150,8 +150,8 @@ static void prepare_taglist(GtkWidget *tree, GtkTreeStore *store)
 
 
 static gboolean
-on_default_tag_tree_button_press_event(GtkWidget *widget, GdkEventButton *event,
-		gpointer user_data)
+on_default_tag_tree_button_press_event(GtkWidget* UP(widget), GdkEventButton *event,
+		gpointer UP(user_data))
 {
 	if (event->button == 3)
 	{
@@ -241,7 +241,7 @@ void sidebar_update_tag_list(GeanyDocument *doc, gboolean update)
 
 /* cleverly sorts documents by their short name */
 static gint documents_sort_func(GtkTreeModel *model, GtkTreeIter *iter_a,
-								GtkTreeIter *iter_b, gpointer data)
+		GtkTreeIter *iter_b, gpointer UP(data))
 {
 	gchar *key_a, *key_b;
 	gchar *name_a, *name_b;
@@ -610,14 +610,16 @@ void sidebar_add_common_menu_items(GtkMenu *menu)
 }
 
 
-static void on_openfiles_show_paths_activate(GtkCheckMenuItem *item, gpointer user_data)
+static void on_openfiles_show_paths_activate(GtkCheckMenuItem *item,
+		gpointer UP(user_data))
 {
 	documents_show_paths = gtk_check_menu_item_get_active(item);
 	sidebar_openfiles_update_all();
 }
 
 
-static void on_list_document_activate(GtkCheckMenuItem *item, gpointer user_data)
+static void on_list_document_activate(GtkCheckMenuItem *item,
+		gpointer UP(user_data))
 {
 	interface_prefs.sidebar_openfiles_visible = gtk_check_menu_item_get_active(item);
 	ui_sidebar_show_hide();
@@ -625,7 +627,8 @@ static void on_list_document_activate(GtkCheckMenuItem *item, gpointer user_data
 }
 
 
-static void on_list_symbol_activate(GtkCheckMenuItem *item, gpointer user_data)
+static void on_list_symbol_activate(GtkCheckMenuItem *item,
+		gpointer UP(user_data))
 {
 	interface_prefs.sidebar_symbol_visible = gtk_check_menu_item_get_active(item);
 	ui_sidebar_show_hide();
@@ -633,7 +636,7 @@ static void on_list_symbol_activate(GtkCheckMenuItem *item, gpointer user_data)
 }
 
 
-static void on_find_in_files(GtkMenuItem *menuitem, gpointer user_data)
+static void on_find_in_files(GtkMenuItem* UP(menuitem), gpointer UP(user_data))
 {
 	GtkTreeSelection *treesel;
 	GtkTreeIter iter;
@@ -658,7 +661,8 @@ static void on_find_in_files(GtkMenuItem *menuitem, gpointer user_data)
 }
 
 
-static void on_openfiles_expand_collapse(GtkMenuItem *menuitem, gpointer user_data)
+static void on_openfiles_expand_collapse(GtkMenuItem* UP(menuitem),
+		gpointer user_data)
 {
 	gboolean expand = GPOINTER_TO_INT(user_data);
 
@@ -760,7 +764,7 @@ static void unfold_parent(GtkTreeIter *iter)
 /* compares the given data with the doc pointer from the selected row of openfiles
  * treeview, in case of a match the row is selected and TRUE is returned
  * (called indirectly from gtk_tree_model_foreach()) */
-static gboolean tree_model_find_node(GtkTreeModel *model, GtkTreePath *path,
+static gboolean tree_model_find_node(GtkTreeModel* UP(model), GtkTreePath *path,
 		GtkTreeIter *iter, gpointer data)
 {
 	GeanyDocument *doc;
@@ -813,7 +817,8 @@ static void document_action(GeanyDocument *doc, gint action)
 }
 
 
-static void on_openfiles_document_action(GtkMenuItem *menuitem, gpointer user_data)
+static void on_openfiles_document_action(GtkMenuItem* UP(menuitem),
+		gpointer user_data)
 {
 	GtkTreeIter iter;
 	GtkTreeSelection *selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tv.tree_openfiles));
@@ -909,7 +914,7 @@ static gboolean taglist_go_to_selection(GtkTreeSelection *selection, guint keyva
 
 
 static gboolean sidebar_key_press_cb(GtkWidget *widget, GdkEventKey *event,
-											 gpointer user_data)
+		gpointer UP(user_data))
 {
 	may_steal_focus = FALSE;
 	if (ui_is_keyval_enter_or_return(event->keyval) || event->keyval == GDK_space)
@@ -1122,8 +1127,8 @@ void sidebar_focus_symbols_tab(void)
 }
 
 
-static void sidebar_tabs_show_hide(GtkNotebook *notebook, GtkWidget *child,
-								   guint page_num, gpointer data)
+static void sidebar_tabs_show_hide(GtkNotebook *notebook, GtkWidget* UP(child),
+		guint UP(page_num), gpointer UP(data))
 {
 	gint tabs = gtk_notebook_get_n_pages(notebook);
 

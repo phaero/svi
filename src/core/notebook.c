@@ -92,7 +92,7 @@ static void update_mru_docs_head(GeanyDocument *doc)
 
 /* before the tab changes, add the current document to the MRU list */
 static void on_notebook_switch_page(GtkNotebook *notebook,
-	GtkNotebookPage *page, guint page_num, gpointer user_data)
+		GtkNotebookPage* UP(page), guint page_num, gpointer UP(user_data))
 {
 	GeanyDocument *new;
 
@@ -108,7 +108,7 @@ static void on_notebook_switch_page(GtkNotebook *notebook,
 }
 
 
-static void on_document_close(GObject *obj, GeanyDocument *doc)
+static void on_document_close(GObject* UP(obj), GeanyDocument *doc)
 {
 	if (! main_status.quitting)
 	{
@@ -164,7 +164,7 @@ static gboolean is_modifier_key(guint keyval)
 }
 
 
-static gboolean on_key_release_event(GtkWidget *widget, GdkEventKey *ev, gpointer user_data)
+static gboolean on_key_release_event(GtkWidget* UP(widget), GdkEventKey *ev, gpointer UP(user_data))
 {
 	/* user may have rebound keybinding to a different modifier than Ctrl, so check all */
 	if (switch_in_progress && is_modifier_key(ev->keyval))
@@ -299,7 +299,7 @@ gboolean notebook_switch_in_progress(void)
 }
 
 
-static gboolean focus_sci(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+static gboolean focus_sci(GtkWidget* UP(widget), GdkEventButton *event, gpointer UP(user_data))
 {
 	GeanyDocument *doc = document_get_current();
 
@@ -402,7 +402,7 @@ static gboolean is_position_on_tab_bar(GtkNotebook *notebook, GdkEventButton *ev
 }
 
 
-static void tab_bar_menu_activate_cb(GtkMenuItem *menuitem, gpointer data)
+static void tab_bar_menu_activate_cb(GtkMenuItem* UP(menuitem), gpointer data)
 {
 	GeanyDocument *doc = data;
 
@@ -413,7 +413,7 @@ static void tab_bar_menu_activate_cb(GtkMenuItem *menuitem, gpointer data)
 }
 
 
-static void on_open_in_new_window_activate(GtkMenuItem *menuitem, gpointer user_data)
+static void on_open_in_new_window_activate(GtkMenuItem* UP(menuitem), gpointer user_data)
 {
 	gchar *geany_path;
 	GeanyDocument *doc = user_data;
@@ -501,8 +501,8 @@ static void show_tab_bar_popup_menu(GdkEventButton *event, GtkWidget *page)
 }
 
 
-static gboolean notebook_tab_bar_click_cb(GtkWidget *widget, GdkEventButton *event,
-										  gpointer user_data)
+static gboolean notebook_tab_bar_click_cb(GtkWidget *widget,
+		GdkEventButton *event, gpointer UP(user_data))
 {
 	if (event->type == GDK_2BUTTON_PRESS)
 	{
@@ -574,9 +574,8 @@ static void setup_tab_dnd()
 }
 
 
-static void
-notebook_page_reordered_cb(GtkNotebook *notebook, GtkWidget *child, guint page_num,
-	gpointer user_data)
+static void notebook_page_reordered_cb(GtkNotebook* UP(notebook),
+		GtkWidget* UP(child), guint UP(page_num), gpointer UP(user_data))
 {
 	/* Not necessary to update open files treeview if it's sorted.
 	 * Note: if enabled, it's best to move the item instead of recreating all items. */
@@ -607,7 +606,7 @@ static void tab_count_changed(void)
 }
 
 
-static gboolean notebook_tab_click(GtkWidget *widget, GdkEventButton *event, gpointer data)
+static gboolean notebook_tab_click(GtkWidget* UP(widget), GdkEventButton *event, gpointer data)
 {
 	guint state;
 
@@ -645,8 +644,8 @@ static gboolean notebook_tab_click(GtkWidget *widget, GdkEventButton *event, gpo
 }
 
 
-static void notebook_tab_close_button_style_set(GtkWidget *btn, GtkRcStyle *prev_style,
-												gpointer data)
+static void notebook_tab_close_button_style_set(GtkWidget *btn,
+		GtkRcStyle* UP(prev_style), gpointer UP(data))
 {
 	gint w, h;
 
@@ -729,8 +728,7 @@ gint notebook_new_tab(GeanyDocument *this)
 }
 
 
-static void
-notebook_tab_close_clicked_cb(GtkButton *button, gpointer user_data)
+static void notebook_tab_close_clicked_cb(GtkButton* UP(button), gpointer user_data)
 {
 	gint cur_page = gtk_notebook_page_num(GTK_NOTEBOOK(main_widgets.notebook),
 		GTK_WIDGET(user_data));
@@ -771,9 +769,9 @@ void notebook_remove_page(gint page_num)
 
 
 static void
-on_window_drag_data_received(GtkWidget *widget, GdkDragContext *drag_context,
-		gint x, gint y, GtkSelectionData *data, guint target_type,
-		guint event_time, gpointer user_data)
+on_window_drag_data_received(GtkWidget* UP(widget), GdkDragContext *drag_context,
+		gint UP(x), gint UP(y), GtkSelectionData *data, guint UP(target_type),
+		guint event_time, gpointer UP(user_data))
 {
 	gboolean success = FALSE;
 

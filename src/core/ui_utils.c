@@ -1435,7 +1435,7 @@ ui_image_menu_item_new(const gchar *stock_id, const gchar *label)
 
 
 static void entry_clear_icon_release_cb(GtkEntry *entry, gint icon_pos,
-										GdkEvent *event, gpointer data)
+		GdkEvent *event, gpointer UP(data))
 {
 	if (event->button.button == 1 && icon_pos == 1)
 	{
@@ -1516,7 +1516,7 @@ void ui_hbutton_box_copy_layout(GtkButtonBox *master, GtkButtonBox *copy)
 
 
 static gboolean tree_model_find_text(GtkTreeModel *model,
-		GtkTreeIter *iter, gint column, const gchar *text)
+		GtkTreeIter *iter, gint UP(column), const gchar *text)
 {
 	gchar *combo_text;
 	gboolean found = FALSE;
@@ -1788,7 +1788,7 @@ static gchar *run_file_chooser(const gchar *title, GtkFileChooserAction action,
 }
 
 
-static void ui_path_box_open_clicked(GtkButton *button, gpointer user_data)
+static void ui_path_box_open_clicked(GtkButton* UP(button), gpointer user_data)
 {
 	GtkWidget *path_box = GTK_WIDGET(user_data);
 	GtkFileChooserAction action = GPOINTER_TO_INT(g_object_get_data(G_OBJECT(path_box), "action"));
@@ -1860,7 +1860,7 @@ void ui_table_add_row(GtkTable *table, gint row, ...)
 }
 
 
-static void on_config_file_clicked(GtkWidget *widget, gpointer user_data)
+static void on_config_file_clicked(GtkWidget* UP(widget), gpointer user_data)
 {
 	const gchar *file_name = user_data;
 	GeanyFiletype *ft = NULL;
@@ -1889,7 +1889,7 @@ static void on_config_file_clicked(GtkWidget *widget, gpointer user_data)
 }
 
 
-static void free_on_closure_notify(gpointer data, GClosure *closure)
+static void free_on_closure_notify(gpointer data, GClosure* UP(closure))
 {
 	g_free(data);
 }
@@ -2038,7 +2038,7 @@ GeanySharedMenu;
 #define foreach_menu(item, array) \
 	for (item = array; item->menu; item++)
 
-static void on_editor_menu_show(GtkWidget *widget, GeanySharedMenu *items)
+static void on_editor_menu_show(GtkWidget* UP(widget), GeanySharedMenu *items)
 {
 	GeanySharedMenu *item;
 
@@ -2053,7 +2053,7 @@ static void on_editor_menu_show(GtkWidget *widget, GeanySharedMenu *items)
 }
 
 
-static void on_editor_menu_hide(GtkWidget *widget, GeanySharedMenu *items)
+static void on_editor_menu_hide(GtkWidget* UP(widget), GeanySharedMenu *items)
 {
 	GeanySharedMenu *item;
 
@@ -2344,7 +2344,7 @@ static void on_auto_separator_item_show_hide(GtkWidget *widget, gpointer user_da
 }
 
 
-static void on_auto_separator_item_destroy(GtkWidget *widget, gpointer user_data)
+static void on_auto_separator_item_destroy(GtkWidget* UP(widget), gpointer user_data)
 {
 	GeanyAutoSeparator *autosep = user_data;
 
@@ -2456,7 +2456,7 @@ static GtkWidget *progress_bar_create(void)
 }
 
 
-static gboolean progress_bar_pulse(gpointer data)
+static gboolean progress_bar_pulse(gpointer UP(data))
 {
 	gtk_progress_bar_pulse(GTK_PROGRESS_BAR(main_widgets.progressbar));
 
@@ -2691,7 +2691,7 @@ gint ui_get_gtk_settings_integer(const gchar *property_name, gint default_value)
 
 
 void ui_editable_insert_text_callback(GtkEditable *editable, gchar *new_text,
-									  gint new_text_len, gint *position, gpointer data)
+		gint new_text_len, gint *position, gpointer UP(data))
 {
 	gboolean first = position != NULL && *position == 0;
 	gint i;

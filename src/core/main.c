@@ -870,7 +870,7 @@ static void load_startup_files(gint argc, gchar **argv)
 }
 
 
-static gboolean send_startup_complete(gpointer data)
+static gboolean send_startup_complete(gpointer UP(data))
 {
 	g_signal_emit_by_name(geany_object, "geany-startup-complete");
 	return FALSE;

@@ -914,7 +914,7 @@ struct StashTreeValue
 typedef struct StashTreeValue StashTreeValue;
 
 
-static void stash_tree_renderer_set_data(GtkCellLayout *cell_layout, GtkCellRenderer *cell,
+static void stash_tree_renderer_set_data(GtkCellLayout* UP(cell_layout), GtkCellRenderer *cell,
 	GtkTreeModel *model, GtkTreeIter *iter, gpointer user_data)
 {
 	GType cell_type = GPOINTER_TO_SIZE(user_data);
@@ -977,22 +977,22 @@ static void stash_tree_renderer_edited(gchar *path_str, gchar *new_text, GtkTree
 }
 
 
-static void stash_tree_boolean_toggled(GtkCellRendererToggle *cell, gchar *path_str,
+static void stash_tree_boolean_toggled(GtkCellRendererToggle* UP(cell), gchar *path_str,
 	GtkTreeModel *model)
 {
 	stash_tree_renderer_edited(path_str, NULL, model);
 }
 
 
-static void stash_tree_string_edited(GtkCellRenderer *cell, gchar *path_str, gchar *new_text,
+static void stash_tree_string_edited(GtkCellRenderer* UP(cell), gchar *path_str, gchar *new_text,
 	GtkTreeModel *model)
 {
 	stash_tree_renderer_edited(path_str, new_text, model);
 }
 
 
-static gboolean stash_tree_discard_value(GtkTreeModel *model, GtkTreePath *path,
-	GtkTreeIter *iter, gpointer user_data)
+static gboolean stash_tree_discard_value(GtkTreeModel *model, GtkTreePath* UP(path),
+	GtkTreeIter *iter, gpointer UP(user_data))
 {
 	StashTreeValue *value;
 
@@ -1005,7 +1005,7 @@ static gboolean stash_tree_discard_value(GtkTreeModel *model, GtkTreePath *path,
 }
 
 
-static void stash_tree_destroy_cb(GtkWidget *widget, gpointer user_data)
+static void stash_tree_destroy_cb(GtkWidget *widget, gpointer UP(user_data))
 {
 	GtkTreeModel *model = gtk_tree_view_get_model(GTK_TREE_VIEW(widget));
 	gtk_tree_model_foreach(model, stash_tree_discard_value, NULL);
@@ -1013,7 +1013,7 @@ static void stash_tree_destroy_cb(GtkWidget *widget, gpointer user_data)
 
 
 static void stash_tree_append_pref(StashGroup *group, StashPref *entry, GtkListStore *store,
-	PrefAction action)
+	PrefAction UP(action))
 {
 	GtkTreeIter iter;
 	StashTreeValue *value;

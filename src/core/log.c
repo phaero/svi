@@ -143,7 +143,7 @@ void log_handlers_init(void)
 }
 
 
-static void on_dialog_response(GtkDialog *dialog, gint response, gpointer user_data)
+static void on_dialog_response(GtkDialog *dialog, gint response, gpointer UP(user_data))
 {
 	if (response == DIALOG_RESPONSE_CLEAR)
 	{

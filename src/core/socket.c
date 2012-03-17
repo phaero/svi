@@ -439,7 +439,7 @@ static gchar *build_document_list(void)
 }
 
 
-gboolean socket_lock_input_cb(GIOChannel *source, GIOCondition condition, gpointer data)
+gboolean socket_lock_input_cb(GIOChannel *source, GIOCondition UP(condition), gpointer data)
 {
 	gint fd, sock;
 	gchar buf[BUFFER_LENGTH];

@@ -653,7 +653,7 @@ static gboolean match_last_chars(ScintillaObject *sci, gint pos, const gchar *st
 }
 
 
-static gboolean reshow_calltip(gpointer data)
+static gboolean reshow_calltip(gpointer UP(data))
 {
 	GeanyDocument *doc;
 
@@ -672,7 +672,7 @@ static gboolean reshow_calltip(gpointer data)
 }
 
 
-static void request_reshowing_calltip(SCNotification *nt)
+static void request_reshowing_calltip(SCNotification* UP(nt))
 {
 	if (calltip.set)
 	{
@@ -2433,7 +2433,7 @@ static void snippets_make_replacements(GeanyEditor *editor, GString *pattern)
 }
 
 
-static gssize replace_cursor_markers(GeanyEditor *editor, GString *pattern)
+static gssize replace_cursor_markers(GeanyEditor* UP(editor), GString *pattern)
 {
 	gssize cur_index = -1;
 	gint i;
@@ -4527,7 +4527,7 @@ gboolean editor_goto_pos(GeanyEditor *editor, gint pos, gboolean mark)
 
 
 static gboolean
-on_editor_scroll_event(GtkWidget *widget, GdkEventScroll *event, gpointer user_data)
+on_editor_scroll_event(GtkWidget* UP(widget), GdkEventScroll *event, gpointer user_data)
 {
 	GeanyEditor *editor = user_data;
 
@@ -4573,7 +4573,7 @@ static gboolean editor_check_colourise(GeanyEditor *editor)
  * prevent unnecessary recolouring other documents after one is saved.
  * Really we want a "draw" signal but there doesn't seem to be one (expose is too late,
  * and "show" doesn't work). */
-static gboolean on_editor_focus_in(GtkWidget *widget, GdkEventFocus *event, gpointer user_data)
+static gboolean on_editor_focus_in(GtkWidget* UP(widget), GdkEventFocus* UP(event), gpointer user_data)
 {
 	GeanyEditor *editor = user_data;
 
@@ -4582,7 +4582,7 @@ static gboolean on_editor_focus_in(GtkWidget *widget, GdkEventFocus *event, gpoi
 }
 
 
-static gboolean on_editor_expose_event(GtkWidget *widget, GdkEventExpose *event,
+static gboolean on_editor_expose_event(GtkWidget* UP(widget), GdkEventExpose* UP(event),
 		gpointer user_data)
 {
 	GeanyEditor *editor = user_data;
@@ -4732,7 +4732,7 @@ void editor_destroy(GeanyEditor *editor)
 }
 
 
-static void on_document_save(GObject *obj, GeanyDocument *doc)
+static void on_document_save(GObject* UP(obj), GeanyDocument *doc)
 {
 	gchar *f = g_build_filename(app->configdir, "snippets.conf", NULL);
 

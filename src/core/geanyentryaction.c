@@ -26,6 +26,7 @@
 
 #include "geany.h"
 #include "support.h"
+#include "utils.h"
 #include "ui_utils.h"
 #include "geanyentryaction.h"
 #include <ctype.h>
@@ -78,7 +79,7 @@ static GtkWidget *geany_entry_action_create_tool_item(GtkAction *action)
 }
 
 
-static void delegate_entry_activate_cb(GtkEntry *entry, GeanyEntryAction *action)
+static void delegate_entry_activate_cb(GtkEntry* UP(entry), GeanyEntryAction *action)
 {
 	GeanyEntryActionPrivate *priv = GEANY_ENTRY_ACTION_GET_PRIVATE(action);
 	const gchar *text = gtk_entry_get_text(GTK_ENTRY(priv->entry));
@@ -87,7 +88,7 @@ static void delegate_entry_activate_cb(GtkEntry *entry, GeanyEntryAction *action
 }
 
 
-static void delegate_entry_activate_backward_cb(GtkEntry *entry, GeanyEntryAction *action)
+static void delegate_entry_activate_backward_cb(GtkEntry* UP(entry), GeanyEntryAction *action)
 {
 	GeanyEntryActionPrivate *priv = GEANY_ENTRY_ACTION_GET_PRIVATE(action);
 	const gchar *text = gtk_entry_get_text(GTK_ENTRY(priv->entry));
@@ -96,7 +97,7 @@ static void delegate_entry_activate_backward_cb(GtkEntry *entry, GeanyEntryActio
 }
 
 
-static void delegate_entry_changed_cb(GtkEditable *editable, GeanyEntryAction *action)
+static void delegate_entry_changed_cb(GtkEditable* UP(editable), GeanyEntryAction *action)
 {
 	GeanyEntryActionPrivate *priv = GEANY_ENTRY_ACTION_GET_PRIVATE(action);
 	const gchar *text = gtk_entry_get_text(GTK_ENTRY(priv->entry));

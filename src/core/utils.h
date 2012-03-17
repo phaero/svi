@@ -30,6 +30,18 @@
 
 #include <time.h>
 
+/** Rename Unused Parameter */
+#define _UP(x) unused_p__ ## x
+
+/** Mark Unused Parameter */
+#define UP(x) _UP(x) __attribute__((unused))
+
+/** Rename Unused Variable */
+#define _UV(x) unused_v__ ## x
+
+/** Mark Unused Variable */
+#define UV(x) _UV(x) __attribute__((unused))
+
 
 /** Returns TRUE if @a ptr points to a non-zero value. */
 #define NZV(ptr) \

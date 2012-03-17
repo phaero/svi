@@ -468,7 +468,7 @@ static void header_label_style_set(GtkWidget *widget)
 }
 
 
-static void homepage_clicked(GtkButton *button, gpointer data)
+static void homepage_clicked(GtkButton* UP(button), gpointer data)
 {
 	utils_open_browser(data);
 }

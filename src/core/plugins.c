@@ -1073,7 +1073,7 @@ static void update_active_plugins_pref(void)
 }
 
 
-static void on_save_settings(GKeyFile *config)
+static void on_save_settings(GKeyFile* UP(config))
 {
 	/* if plugins are disabled, don't clear list of active plugins */
 	if (want_plugins)
@@ -1180,7 +1180,7 @@ static void pm_update_buttons(Plugin *p)
 }
 
 
-static void pm_selection_changed(GtkTreeSelection *selection, gpointer user_data)
+static void pm_selection_changed(GtkTreeSelection *selection, gpointer UP(user_data))
 {
 	GtkTreeIter iter;
 	GtkTreeModel *model;
@@ -1209,7 +1209,7 @@ static void pm_selection_changed(GtkTreeSelection *selection, gpointer user_data
 }
 
 
-static void pm_plugin_toggled(GtkCellRendererToggle *cell, gchar *pth, gpointer data)
+static void pm_plugin_toggled(GtkCellRendererToggle* UP(cell), gchar *pth, gpointer UP(data))
 {
 	gboolean old_state, state;
 	gchar *file_name;
@@ -1327,7 +1327,7 @@ static void pm_prepare_treeview(GtkWidget *tree, GtkListStore *store)
 }
 
 
-static void pm_on_plugin_button_clicked(GtkButton *button, gpointer user_data)
+static void pm_on_plugin_button_clicked(GtkButton* UP(button), gpointer user_data)
 {
 	GtkTreeModel *model;
 	GtkTreeSelection *selection;
@@ -1351,7 +1351,7 @@ static void pm_on_plugin_button_clicked(GtkButton *button, gpointer user_data)
 
 
 static void
-free_non_active_plugin(gpointer data, gpointer user_data)
+free_non_active_plugin(gpointer data, gpointer UP(user_data))
 {
 	Plugin *plugin = data;
 
@@ -1363,7 +1363,8 @@ free_non_active_plugin(gpointer data, gpointer user_data)
 }
 
 
-static void pm_dialog_response(GtkDialog *dialog, gint response, gpointer user_data)
+static void pm_dialog_response(GtkDialog *dialog, gint UP(response),
+		gpointer UP(user_data))
 {
 	if (plugin_list != NULL)
 	{
@@ -1392,7 +1393,7 @@ static GtkWidget *create_table_label(const gchar *text)
 }
 
 
-static void pm_show_dialog(GtkMenuItem *menuitem, gpointer user_data)
+static void pm_show_dialog(GtkMenuItem* UP(menuitem), gpointer UP(user_data))
 {
 	GtkWidget *vbox, *vbox2, *label_vbox, *hbox, *swin, *label, *label2, *desc_win, *table, *paned;
 

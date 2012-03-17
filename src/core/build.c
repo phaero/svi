@@ -459,7 +459,7 @@ static GeanyBuildCommand *get_build_group(const GeanyBuildSource src, const Gean
 	GeanyBuildCommand **g = get_build_group_pointer(src, grp);
 	if (g == NULL) return NULL;
 	return *g;
-};
+}
 
 
 /** Remove the specified Build menu item.
@@ -567,7 +567,7 @@ const gchar *build_get_current_menu_item(const GeanyBuildGroup grp, const guint 
 			break;
 	}
 	return str;
-};
+}
 
 /** Set the string for the menu item field.
  *
@@ -615,7 +615,7 @@ void build_set_menu_item(const GeanyBuildSource src, const GeanyBuildGroup grp,
 			break;
 	}
 	build_menu_update(NULL);
-};
+}
 
 /** Set the string for the menu item field.
  *
@@ -629,7 +629,7 @@ void build_set_menu_item(const GeanyBuildSource src, const GeanyBuildGroup grp,
 void build_activate_menu_item(const GeanyBuildGroup grp, const guint cmd)
 {
 	on_build_menu_item(NULL, GRP_CMD_TO_POINTER(grp, cmd));
-};
+}
 
 
 /* Clear all error indicators in all documents. */
@@ -1175,7 +1175,7 @@ static void show_build_result_message(gboolean failure)
 
 
 #ifndef SYNC_SPAWN
-static void build_exit_cb(GPid child_pid, gint status, gpointer user_data)
+static void build_exit_cb(GPid child_pid, gint status, gpointer UP(user_data))
 {
 	gboolean failure = FALSE;
 
@@ -1206,7 +1206,7 @@ static void build_exit_cb(GPid child_pid, gint status, gpointer user_data)
 #endif
 
 
-static void run_exit_cb(GPid child_pid, gint status, gpointer user_data)
+static void run_exit_cb(GPid child_pid, gint UP(status), gpointer user_data)
 {
 	RunInfo *run_info_data = user_data;
 
@@ -1317,7 +1317,7 @@ static void on_make_custom_input_response(const gchar *input)
 }
 
 
-static void on_build_menu_item(GtkWidget *w, gpointer user_data)
+static void on_build_menu_item(GtkWidget* UP(w), gpointer user_data)
 {
 	GeanyDocument *doc = document_get_current();
 	GeanyBuildCommand *bc;
@@ -1699,7 +1699,7 @@ static void set_stop_button(gboolean stop)
 }
 
 
-static void on_set_build_commands_activate(GtkWidget *w, gpointer u)
+static void on_set_build_commands_activate(GtkWidget* UP(w), gpointer UP(u))
 {
 	/* For now, just show the project dialog */
 	if (app->project)
@@ -1755,7 +1755,7 @@ static void kill_process(GPid *pid)
 }
 
 
-static void on_build_next_error(GtkWidget *menuitem, gpointer user_data)
+static void on_build_next_error(GtkWidget* UP(menuitem), gpointer UP(user_data))
 {
 	if (ui_tree_view_find_next(GTK_TREE_VIEW(msgwindow.tree_compiler),
 		msgwin_goto_compiler_file_line))
@@ -1767,7 +1767,7 @@ static void on_build_next_error(GtkWidget *menuitem, gpointer user_data)
 }
 
 
-static void on_build_previous_error(GtkWidget *menuitem, gpointer user_data)
+static void on_build_previous_error(GtkWidget* UP(menuitem), gpointer UP(user_data))
 {
 	if (ui_tree_view_find_previous(GTK_TREE_VIEW(msgwindow.tree_compiler),
 		msgwin_goto_compiler_file_line))
@@ -1779,7 +1779,7 @@ static void on_build_previous_error(GtkWidget *menuitem, gpointer user_data)
 }
 
 
-void build_toolbutton_build_clicked(GtkAction *action, gpointer unused)
+void build_toolbutton_build_clicked(GtkAction* UP(action), gpointer UP(unused))
 {
 	if (last_toolbutton_action == GBO_TO_POINTER(GEANY_GBO_BUILD))
 	{
@@ -1829,7 +1829,7 @@ static void set_build_command_entry_text(GtkWidget *wid, const gchar *text)
 }
 
 
-static void on_clear_dialog_row(GtkWidget *unused, gpointer user_data)
+static void on_clear_dialog_row(GtkWidget* UP(unused), gpointer user_data)
 {
 	RowWidgets *r = user_data;
 	guint src;
@@ -1860,7 +1860,7 @@ static void on_clear_dialog_row(GtkWidget *unused, gpointer user_data)
 }
 
 
-static void on_clear_dialog_regex_row(GtkEntry *regex, gpointer unused)
+static void on_clear_dialog_regex_row(GtkEntry *regex, gpointer UP(unused))
 {
 	gtk_entry_set_text(regex,"");
 }
@@ -1888,7 +1888,8 @@ static void on_label_button_clicked(GtkWidget *wid, gpointer user_data)
 }
 
 
-static void on_entry_focus(GtkWidget *wid, GdkEventFocus *unused, gpointer user_data)
+static void on_entry_focus(GtkWidget* UP(wid), GdkEventFocus* UP(unused),
+		gpointer user_data)
 {
 	RowWidgets *r = user_data;
 
@@ -1918,8 +1919,8 @@ static const guint entry_x_padding = 3;
 static const guint entry_y_padding = 0;
 
 
-static RowWidgets *build_add_dialog_row(GeanyDocument *doc, GtkTable *table, guint row,
-				GeanyBuildSource dst, guint grp, guint cmd, gboolean dir)
+static RowWidgets *build_add_dialog_row(GeanyDocument *doc, GtkTable *table,
+		guint row, GeanyBuildSource dst, guint grp, guint cmd, gboolean UP(dir))
 {
 	GtkWidget *label, *clear, *clearicon;
 	RowWidgets *roww;
@@ -2325,7 +2326,7 @@ static void show_build_commands_dialog(void)
 
 
 /* Creates the relevant build menu if necessary. */
-BuildMenuItems *build_get_menu_items(gint filetype_idx)
+BuildMenuItems *build_get_menu_items(gint UP(filetype_idx))
 {
 	BuildMenuItems *items;
 

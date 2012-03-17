@@ -184,7 +184,8 @@ GtkWidget *geany_menu_button_action_get_menu(GeanyMenubuttonAction *action)
 }
 
 
-static void menu_items_changed_cb(GtkContainer *container, GtkWidget *widget, GeanyMenubuttonAction *action)
+static void menu_items_changed_cb(GtkContainer* UP(container),
+		GtkWidget* UP(widget), GeanyMenubuttonAction *action)
 {
 	GeanyMenubuttonActionPrivate *priv;
 	gboolean enable;

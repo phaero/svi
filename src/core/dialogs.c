@@ -168,7 +168,7 @@ static void open_file_dialog_handle_response(GtkWidget *dialog, gint response)
 
 
 static void on_file_open_show_hidden_notify(GObject *filechooser,
-	GParamSpec *pspec, gpointer data)
+		GParamSpec* UP(pspec), gpointer UP(data))
 {
 	GtkWidget *toggle_button;
 
@@ -190,7 +190,7 @@ on_file_open_check_hidden_toggled(GtkToggleButton *togglebutton, GtkWidget *dial
 static gint encoding_combo_store_sort_func(GtkTreeModel *model,
 										   GtkTreeIter *a,
 										   GtkTreeIter *b,
-										   gpointer data)
+										   gpointer UP(data))
 {
 	gboolean a_has_child = gtk_tree_model_iter_has_child(model, a);
 	gboolean b_has_child = gtk_tree_model_iter_has_child(model, b);
@@ -266,11 +266,9 @@ static GtkTreeStore *create_encoding_combo_store(GtkTreeIter *iter_detect)
 }
 
 
-static void encoding_combo_cell_data_func(GtkCellLayout *cell_layout,
-										  GtkCellRenderer *cell,
-										  GtkTreeModel *tree_model,
-										  GtkTreeIter *iter,
-										  gpointer data)
+static void encoding_combo_cell_data_func(GtkCellLayout* UP(cell_layout),
+		GtkCellRenderer *cell, GtkTreeModel *tree_model, GtkTreeIter *iter,
+		gpointer UP(data))
 {
 	gboolean sensitive = !gtk_tree_model_iter_has_child(tree_model, iter);
 
@@ -833,8 +831,8 @@ gboolean dialogs_show_unsaved_file(GeanyDocument *doc)
 }
 
 
-static void
-on_font_apply_button_clicked(GtkButton *button, gpointer user_data)
+static void on_font_apply_button_clicked(GtkButton* UP(button),
+		gpointer UP(user_data))
 {
 	gchar *fontname;
 
@@ -845,8 +843,8 @@ on_font_apply_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-static void
-on_font_ok_button_clicked(GtkButton *button, gpointer user_data)
+static void on_font_ok_button_clicked(GtkButton *button,
+		gpointer UP(user_data))
 {
 	/* We do the same thing as apply, but we close the dialog after. */
 	on_font_apply_button_clicked(button, NULL);
@@ -854,8 +852,8 @@ on_font_ok_button_clicked(GtkButton *button, gpointer user_data)
 }
 
 
-static void
-on_font_cancel_button_clicked(GtkButton *button, gpointer user_data)
+static void on_font_cancel_button_clicked(GtkButton* UP(button),
+		gpointer UP(user_data))
 {
 	gtk_widget_hide(ui_widgets.open_fontsel);
 }
@@ -895,22 +893,22 @@ void dialogs_show_open_font()
 }
 
 
-static void
-on_input_dialog_show(GtkDialog *dialog, GtkWidget *entry)
+static void on_input_dialog_show(GtkDialog* UP(dialog),
+		GtkWidget *entry)
 {
 	gtk_widget_grab_focus(entry);
 }
 
 
-static void
-on_input_entry_activate(GtkEntry *entry, GtkDialog *dialog)
+static void on_input_entry_activate(GtkEntry* UP(entry),
+		GtkDialog *dialog)
 {
 	gtk_dialog_response(dialog, GTK_RESPONSE_ACCEPT);
 }
 
 
-static void
-on_input_numeric_activate(GtkEntry *entry, GtkDialog *dialog)
+static void on_input_numeric_activate(GtkEntry* UP(entry),
+		GtkDialog *dialog)
 {
 	gtk_dialog_response(dialog, GTK_RESPONSE_ACCEPT);
 }

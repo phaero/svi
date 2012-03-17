@@ -307,7 +307,7 @@ void vte_close(void)
 }
 
 
-static gboolean vte_keyrelease_cb(GtkWidget *widget, GdkEventKey *event, gpointer data)
+static gboolean vte_keyrelease_cb(GtkWidget* UP(widget), GdkEventKey *event, gpointer UP(data))
 {
 	if (ui_is_keyval_enter_or_return(event->keyval) ||
 		((event->keyval == GDK_c) && (event->state & GDK_CONTROL_MASK)))
@@ -319,7 +319,7 @@ static gboolean vte_keyrelease_cb(GtkWidget *widget, GdkEventKey *event, gpointe
 }
 
 
-static gboolean vte_keypress_cb(GtkWidget *widget, GdkEventKey *event, gpointer data)
+static gboolean vte_keypress_cb(GtkWidget *widget, GdkEventKey *event, gpointer UP(data))
 {
 	if (vc->enable_bash_keys)
 		return FALSE;	/* Ctrl-[CD] will be handled by the VTE itself */
@@ -341,7 +341,7 @@ static gboolean vte_keypress_cb(GtkWidget *widget, GdkEventKey *event, gpointer 
 }
 
 
-static void vte_commit_cb(VteTerminal *vte, gchar *arg1, guint arg2, gpointer user_data)
+static void vte_commit_cb(VteTerminal* UP(vte), gchar* UP(arg1), guint UP(arg2), gpointer UP(user_data))
 {
 	clean = FALSE;
 }
@@ -383,7 +383,7 @@ static void vte_restart(GtkWidget *widget)
 }
 
 
-static gboolean vte_button_pressed(GtkWidget *widget, GdkEventButton *event, gpointer user_data)
+static gboolean vte_button_pressed(GtkWidget* UP(widget), GdkEventButton *event, gpointer UP(user_data))
 {
 	if (event->button == 3)
 	{
@@ -458,7 +458,7 @@ void vte_apply_user_settings(void)
 }
 
 
-static void vte_popup_menu_clicked(GtkMenuItem *menuitem, gpointer user_data)
+static void vte_popup_menu_clicked(GtkMenuItem* UP(menuitem), gpointer user_data)
 {
 	switch (GPOINTER_TO_INT(user_data))
 	{
@@ -680,7 +680,7 @@ void vte_cwd(const gchar *filename, gboolean force)
 
 
 static void vte_drag_data_received(GtkWidget *widget, GdkDragContext *drag_context,
-								   gint x, gint y, GtkSelectionData *data, guint info, guint ltime)
+								   gint UP(x), gint UP(y), GtkSelectionData *data, guint info, guint ltime)
 {
 	if (info == TARGET_TEXT_PLAIN)
 	{
@@ -706,7 +706,7 @@ G_MODULE_EXPORT void on_check_run_in_vte_toggled(GtkToggleButton *togglebutton, 
 }
 
 
-G_MODULE_EXPORT void on_term_font_set(GtkFontButton *widget, gpointer user_data)
+G_MODULE_EXPORT void on_term_font_set(GtkFontButton *widget, gpointer UP(user_data))
 {
 	const gchar *fontbtn = gtk_font_button_get_font_name(widget);
 
@@ -718,7 +718,7 @@ G_MODULE_EXPORT void on_term_font_set(GtkFontButton *widget, gpointer user_data)
 }
 
 
-G_MODULE_EXPORT void on_term_fg_color_set(GtkColorButton *widget, gpointer user_data)
+G_MODULE_EXPORT void on_term_fg_color_set(GtkColorButton *widget, gpointer UP(user_data))
 {
 	g_free(vc->colour_fore);
 	vc->colour_fore = g_new0(GdkColor, 1);
@@ -726,7 +726,7 @@ G_MODULE_EXPORT void on_term_fg_color_set(GtkColorButton *widget, gpointer user_
 }
 
 
-G_MODULE_EXPORT void on_term_bg_color_set(GtkColorButton *widget, gpointer user_data)
+G_MODULE_EXPORT void on_term_bg_color_set(GtkColorButton *widget, gpointer UP(user_data))
 {
 	g_free(vc->colour_back);
 	vc->colour_back = g_new0(GdkColor, 1);

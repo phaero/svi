@@ -275,7 +275,7 @@ GeanyKeyGroup *plugin_set_key_group(GeanyPlugin *plugin,
 }
 
 
-static void on_pref_btn_clicked(gpointer btn, Plugin *p)
+static void on_pref_btn_clicked(gpointer UP(btn), Plugin *p)
 {
 	p->configure_single(main_widgets.window);
 }

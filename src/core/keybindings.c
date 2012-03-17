@@ -668,7 +668,8 @@ static void load_user_kb(void)
 }
 
 
-static void apply_kb_accel(GeanyKeyGroup *group, GeanyKeyBinding *kb, gpointer user_data)
+static void apply_kb_accel(GeanyKeyGroup* UP(group), GeanyKeyBinding *kb,
+		gpointer UP(user_data))
 {
 	if (kb->key != 0 && kb->menu_item)
 	{
@@ -881,7 +882,8 @@ static GtkWidget *create_dialog(void)
 /* non-modal keyboard shortcuts dialog, so user can edit whilst seeing the shortcuts */
 static GtkWidget *key_dialog = NULL;
 
-static void on_dialog_response(GtkWidget *dialog, gint response, gpointer user_data)
+static void on_dialog_response(GtkWidget *dialog, gint response,
+		gpointer UP(user_data))
 {
 	if (response == GTK_RESPONSE_APPLY)
 	{
@@ -1041,8 +1043,8 @@ static gboolean check_menu_key(GeanyDocument *doc, guint keyval, guint state, gu
 
 
 #ifdef HAVE_VTE
-static gboolean on_menu_expose_event(GtkWidget *widget, GdkEventExpose *event,
-		gpointer user_data)
+static gboolean on_menu_expose_event(GtkWidget *widget, GdkEventExpose* UP(event),
+		gpointer UP(user_data))
 {
 	if (!GTK_WIDGET_SENSITIVE(widget))
 		gtk_widget_set_sensitive(GTK_WIDGET(widget), TRUE);
@@ -1159,7 +1161,8 @@ gboolean keybindings_check_event(GdkEventKey *ev, GeanyKeyBinding *kb)
 
 
 /* central keypress event handler, almost all keypress events go to this function */
-static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *ev, gpointer user_data)
+static gboolean on_key_press_event(GtkWidget* UP(widget), GdkEventKey *ev,
+		gpointer UP(user_data))
 {
 	guint state, keyval;
 	gsize g, i;

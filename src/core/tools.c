@@ -144,13 +144,13 @@ static void cc_dialog_add_command(struct cc_dialog *cc, gint idx, gboolean start
 }
 
 
-static void cc_on_dialog_add_clicked(GtkButton *button, struct cc_dialog *cc)
+static void cc_on_dialog_add_clicked(GtkButton* UP(button), struct cc_dialog *cc)
 {
 	cc_dialog_add_command(cc, -1, TRUE);
 }
 
 
-static void cc_on_dialog_remove_clicked(GtkButton *button, struct cc_dialog *cc)
+static void cc_on_dialog_remove_clicked(GtkButton* UP(button), struct cc_dialog *cc)
 {
 	GtkTreeIter iter;
 
@@ -159,7 +159,7 @@ static void cc_on_dialog_remove_clicked(GtkButton *button, struct cc_dialog *cc)
 }
 
 
-static void cc_on_dialog_move_up_clicked(GtkButton *button, struct cc_dialog *cc)
+static void cc_on_dialog_move_up_clicked(GtkButton* UP(button), struct cc_dialog *cc)
 {
 	GtkTreeIter iter;
 
@@ -179,7 +179,7 @@ static void cc_on_dialog_move_up_clicked(GtkButton *button, struct cc_dialog *cc
 }
 
 
-static void cc_on_dialog_move_down_clicked(GtkButton *button, struct cc_dialog *cc)
+static void cc_on_dialog_move_down_clicked(GtkButton* UP(button), struct cc_dialog *cc)
 {
 	GtkTreeIter iter;
 
@@ -193,7 +193,7 @@ static void cc_on_dialog_move_down_clicked(GtkButton *button, struct cc_dialog *
 }
 
 
-static gboolean cc_iofunc(GIOChannel *ioc, GIOCondition cond, gpointer data)
+static gboolean cc_iofunc(GIOChannel *ioc, GIOCondition cond, gpointer UP(data))
 {
 	if (cond & (G_IO_IN | G_IO_PRI))
 	{
@@ -400,8 +400,8 @@ void tools_execute_custom_command(GeanyDocument *doc, const gchar *command)
 }
 
 
-static void cc_dialog_on_command_edited(GtkCellRendererText *renderer, gchar *path, gchar *text,
-		struct cc_dialog *cc)
+static void cc_dialog_on_command_edited(GtkCellRendererText* UP(renderer),
+		gchar *path, gchar *text, struct cc_dialog *cc)
 {
 	GtkTreeIter iter;
 
@@ -457,13 +457,22 @@ static void cc_dialog_update_sensitive(struct cc_dialog *cc)
 }
 
 
-static void cc_dialog_on_tree_selection_changed(GtkTreeSelection *selection, struct cc_dialog *cc)
+static void cc_dialog_on_tree_selection_changed(GtkTreeSelection* UP(selection),
+		struct cc_dialog *cc)
 {
 	cc_dialog_update_sensitive(cc);
 }
 
 
-static void cc_dialog_on_row_inserted(GtkTreeModel *model, GtkTreePath  *path, GtkTreeIter *iter,
+static void cc_dialog_on_row_inserted(GtkTreeModel* UP(model), GtkTreePath* UP(path),
+		GtkTreeIter* UP(iter), struct cc_dialog *cc)
+{
+	cc_dialog_update_ids(cc);
+	cc_dialog_update_sensitive(cc);
+}
+
+
+static void cc_dialog_on_row_deleted(GtkTreeModel* UP(model), GtkTreePath* UP(path),
 		struct cc_dialog *cc)
 {
 	cc_dialog_update_ids(cc);
@@ -471,15 +480,8 @@ static void cc_dialog_on_row_inserted(GtkTreeModel *model, GtkTreePath  *path, G
 }
 
 
-static void cc_dialog_on_row_deleted(GtkTreeModel *model, GtkTreePath  *path, struct cc_dialog *cc)
-{
-	cc_dialog_update_ids(cc);
-	cc_dialog_update_sensitive(cc);
-}
-
-
-static void cc_dialog_on_rows_reordered(GtkTreeModel *model, GtkTreePath  *path, GtkTreeIter *iter,
-		gpointer new_order, struct cc_dialog *cc)
+static void cc_dialog_on_rows_reordered(GtkTreeModel* UP(model), GtkTreePath* UP(path),
+		GtkTreeIter* UP(iter), gpointer UP(new_order), struct cc_dialog *cc)
 {
 	cc_dialog_update_ids(cc);
 	cc_dialog_update_sensitive(cc);
@@ -639,7 +641,7 @@ static void cc_show_dialog_custom_commands(void)
 }
 
 
-static void cc_on_custom_command_activate(GtkMenuItem *menuitem, gpointer user_data)
+static void cc_on_custom_command_activate(GtkMenuItem* UP(menuitem), gpointer user_data)
 {
 	GeanyDocument *doc = document_get_current();
 	gint command_idx;
@@ -887,15 +889,14 @@ void tools_word_count(void)
 /*
  * color dialog callbacks
  */
-static void
-on_color_cancel_button_clicked(GtkButton *button, gpointer user_data)
+static void on_color_cancel_button_clicked(GtkButton* UP(button),
+		gpointer UP(user_data))
 {
 	gtk_widget_hide(ui_widgets.open_colorsel);
 }
 
 
-static void
-on_color_ok_button_clicked(GtkButton *button, gpointer user_data)
+static void on_color_ok_button_clicked(GtkButton* UP(button), gpointer UP(user_data))
 {
 	GdkColor color;
 	GeanyDocument *doc = document_get_current();
