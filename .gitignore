@@ -10,6 +10,15 @@
 /doc/*.pdf
 /doc/reference
 
+# Cscope file
+cscope.files
+cscope.in.out
+cscope.out
+cscope.po.out
+
+# Tags file
+tags
+
 # waf files
 bin
 .lock-waf*
