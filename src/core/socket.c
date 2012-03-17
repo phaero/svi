@@ -56,21 +56,6 @@
 
 #ifdef HAVE_SOCKET
 
-#include <sys/time.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <netinet/in.h>
-#include <glib/gstdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <fcntl.h>
-
-#ifdef GDK_WINDOWING_X11
-#include <gdk/gdkx.h>
-#endif
-
 #include "main.h"
 #include "socket.h"
 #include "document.h"
@@ -80,7 +65,21 @@
 #include "dialogs.h"
 #include "encodings.h"
 
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/un.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
 
+#include <glib/gstdio.h>
+
+#ifdef GDK_WINDOWING_X11
+#include <gdk/gdkx.h>
+#endif
 
 #define SOCKET_IS_VALID(s)	((s) >= 0)
 #define INVALID_SOCKET		(-1)
@@ -628,5 +627,4 @@ gint socket_fd_write(gint fd, const gchar *buf, gint len)
 	return write(fd, buf, len);
 }
 
-
-#endif
+#endif /* HAVE_SOCKET */

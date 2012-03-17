@@ -27,17 +27,6 @@
 
 #ifdef HAVE_VTE
 
-/* include stdlib.h AND unistd.h, because on GNU/Linux pid_t seems to be
- * in stdlib.h, on FreeBSD in unistd.h, sys/types.h is needed for C89 */
-#include <stdlib.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-#include <gdk/gdkkeysyms.h>
-#include <signal.h>
-#include <string.h>
-#include <errno.h>
-
 #include "vte.h"
 #include "support.h"
 #include "prefs.h"
@@ -50,6 +39,16 @@
 #include "editor.h"
 #include "sciwrappers.h"
 
+/* include stdlib.h AND unistd.h, because on GNU/Linux pid_t seems to be
+ * in stdlib.h, on FreeBSD in unistd.h, sys/types.h is needed for C89 */
+#include <stdlib.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <unistd.h>
+#include <string.h>
+#include <errno.h>
+
+#include <gdk/gdkkeysyms.h>
 
 VteInfo vte_info;
 VteConfig *vc;
@@ -373,8 +372,7 @@ static void vte_start(GtkWidget *widget)
 static void vte_restart(GtkWidget *widget)
 {
 	vte_get_working_directory(); /* try to keep the working directory when restarting the VTE */
-	if (pid > 0)
-	{
+	if (pid > 0) {
 		kill(pid, SIGINT);
 		pid = 0;
 	}
@@ -826,5 +824,4 @@ void vte_send_selection_to_vte(void)
 	g_free(text);
 }
 
-
-#endif
+#endif /* HAVE_VTE */
