@@ -14,8 +14,8 @@
  * to br_*", try renaming prefix.c to prefix.cpp
  */
 
-#ifndef GEANY_PREFIX_H
-#define GEANY_PREFIX_H
+#ifndef SVI_PREFIX_H
+#define SVI_PREFIX_H
 
 
 /*
@@ -60,11 +60,11 @@
 	#undef SYSCONFDIR
 	#undef CONFDIR
 	#undef LOCALEDIR
-	#undef GEANY_PREFIX
-	#undef GEANY_DATADIR
-	#undef GEANY_LIBDIR
-	#undef GEANY_DOCDIR
-	#undef GEANY_LOCALEDIR
+	#undef SVI_PREFIX
+	#undef SVI_DATADIR
+	#undef SVI_LIBDIR
+	#undef SVI_DOCDIR
+	#undef SVI_LOCALEDIR
 
 	#define SELFPATH	(br_thread_local_store (br_locate ((void *) "")))
 	#define PREFIXDIR	(br_thread_local_store (br_locate_prefix ((void *) "")))
@@ -74,11 +74,11 @@
 	#define ETCDIR		(br_thread_local_store (br_prepend_prefix ((void *) "", "/etc")))
 	#define SYSCONFDIR	(br_thread_local_store (br_prepend_prefix ((void *) "", "/etc")))
 	#define CONFDIR		(br_thread_local_store (br_prepend_prefix ((void *) "", "/etc")))
-	#define GEANY_PREFIX		(br_thread_local_store (br_locate_prefix ((void *) "")))
-	#define GEANY_DATADIR		(br_thread_local_store (br_prepend_prefix ((void *) "", "/share")))
-	#define GEANY_LIBDIR		(br_thread_local_store (br_prepend_prefix ((void *) "", "/lib")))
-	#define GEANY_DOCDIR		(br_thread_local_store (br_prepend_prefix ((void *) "", "/share/doc/geany")))
-	#define GEANY_LOCALEDIR		(br_thread_local_store (br_prepend_prefix ((void *) "", "/share/locale")))
+	#define SVI_PREFIX		(br_thread_local_store (br_locate_prefix ((void *) "")))
+	#define SVI_DATADIR		(br_thread_local_store (br_prepend_prefix ((void *) "", "/share")))
+	#define SVI_LIBDIR		(br_thread_local_store (br_prepend_prefix ((void *) "", "/lib")))
+	#define SVI_DOCDIR		(br_thread_local_store (br_prepend_prefix ((void *) "", "/share/doc/svi")))
+	#define SVI_LOCALEDIR		(br_thread_local_store (br_prepend_prefix ((void *) "", "/share/locale")))
 #endif /* BR_NO_MACROS */
 
 
@@ -93,4 +93,4 @@ char *br_prepend_prefix	(void *symbol, char *path);
 
 #endif /* ENABLE_BINRELOC */
 
-#endif /* GEANY_PREFIX_H */
+#endif /* SVI_PREFIX_H */

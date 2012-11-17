@@ -36,7 +36,7 @@ GeanyData		*geany_data;
 GeanyFunctions	*geany_functions;
 
 
-PLUGIN_VERSION_CHECK(GEANY_API_VERSION)
+PLUGIN_VERSION_CHECK(SVI_API_VERSION)
 
 PLUGIN_SET_INFO(_("Save Actions"), _("This plugin provides different actions related to saving of files."),
 	VERSION, _("The Geany developer team"))

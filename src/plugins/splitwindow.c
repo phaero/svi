@@ -30,7 +30,7 @@
 #include <string.h>
 
 
-PLUGIN_VERSION_CHECK(GEANY_API_VERSION)
+PLUGIN_VERSION_CHECK(SVI_API_VERSION)
 PLUGIN_SET_INFO(_("Split Window"), _("Splits the editor view into two windows."),
 	VERSION, _("The Geany developer team"))
 

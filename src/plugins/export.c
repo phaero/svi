@@ -35,7 +35,7 @@
 GeanyData		*geany_data;
 GeanyFunctions	*geany_functions;
 
-PLUGIN_VERSION_CHECK(GEANY_API_VERSION)
+PLUGIN_VERSION_CHECK(SVI_API_VERSION)
 PLUGIN_SET_INFO(_("Export"), _("Exports the current file into different formats."), VERSION,
 	_("The Geany developer team"))
 

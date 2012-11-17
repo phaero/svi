@@ -1,8 +1,9 @@
 /*
- *      main.c - this file is part of Geany, a fast and lightweight IDE
+ *      main.c - this file is part of Svi (previously Geany)
  *
  *      Copyright 2005-2011 Enrico Tröger <enrico(dot)troeger(at)uvena(dot)de>
  *      Copyright 2006-2011 Nick Treleaven <nick(dot)treleaven(at)btinternet(dot)com>
+ *      Copyright 2012-     Johan Segolsson <johan(dot)segolsson(at)gmail(dot)com>
  *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -369,8 +370,8 @@ static void setup_paths(void)
 	gchar *doc_dir;
 
 	/* set paths */
-	data_dir = g_strconcat(GEANY_DATADIR, "/geany", NULL); /* e.g. /usr/share/geany */
-	doc_dir = g_strconcat(GEANY_DOCDIR, "/html", NULL);
+	data_dir = g_strconcat(SVI_DATADIR, "/geany", NULL); /* e.g. /usr/share/geany */
+	doc_dir = g_strconcat(SVI_DOCDIR, "/html", NULL);
 
 	/* convert path names to locale encoding */
 	app->datadir = utils_get_locale_from_utf8(data_dir);
@@ -509,10 +510,10 @@ static void parse_command_line_options(gint *argc, gchar ***argv)
 
 	if (print_prefix)
 	{
-		printf("%s\n", GEANY_PREFIX);
-		printf("%s\n", GEANY_DATADIR);
-		printf("%s\n", GEANY_LIBDIR);
-		printf("%s\n", GEANY_LOCALEDIR);
+		printf("%s\n", SVI_PREFIX);
+		printf("%s\n", SVI_DATADIR);
+		printf("%s\n", SVI_LIBDIR);
+		printf("%s\n", SVI_LOCALEDIR);
 		exit(0);
 	}
 
@@ -909,7 +910,7 @@ gint main(gint argc, gchar **argv)
 
 	setup_paths();
 #ifdef ENABLE_NLS
-	main_locale_init(GEANY_LOCALEDIR, GETTEXT_PACKAGE);
+	main_locale_init(SVI_LOCALEDIR, GETTEXT_PACKAGE);
 #endif
 	parse_command_line_options(&argc, &argv);
 
@@ -956,7 +957,7 @@ gint main(gint argc, gchar **argv)
 #endif
 
 	locale = get_locale();
-	geany_debug("Geany %s, %s",
+	geany_debug("svi %s, %s",
 		main_get_version_string(),
 		locale);
 	geany_debug(geany_lib_versions,

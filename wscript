@@ -86,7 +86,7 @@ def configure(conf):
 	# but they are not added to the environment, so we need to
 	_add_define_to_env(conf, 'DATADIR')
 	_add_define_to_env(conf, 'LOCALEDIR')
-	docdir = os.path.join(conf.env['DATADIR'], 'doc', 'geany')
+	docdir = os.path.join(conf.env['DATADIR'], 'doc', 'svi')
 	libdir = os.path.join(conf.env['PREFIX'], 'lib')
 	mandir = os.path.join(conf.env['DATADIR'], 'man')
 	_define_from_opt(conf, 'DOCDIR', conf.options.docdir, docdir)
@@ -96,11 +96,11 @@ def configure(conf):
 	revision = _get_git_rev(conf)
 
 	conf.define('ENABLE_NLS', 1)
-	conf.define('GEANY_LOCALEDIR', conf.env['LOCALEDIR'], quote=True)
-	conf.define('GEANY_DATADIR',  conf.env['DATADIR'], quote=True)
-	conf.define('GEANY_DOCDIR', conf.env['DOCDIR'], quote=True)
-	conf.define('GEANY_LIBDIR', conf.env['LIBDIR'], quote=True)
-	conf.define('GEANY_PREFIX', conf.env['PREFIX'], quote=True)
+	conf.define('SVI_LOCALEDIR', conf.env['LOCALEDIR'], quote=True)
+	conf.define('SVI_DATADIR',  conf.env['DATADIR'], quote=True)
+	conf.define('SVI_DOCDIR', conf.env['DOCDIR'], quote=True)
+	conf.define('SVI_LIBDIR', conf.env['LIBDIR'], quote=True)
+	conf.define('SVI_PREFIX', conf.env['PREFIX'], quote=True)
 	conf.define('PACKAGE', APPNAME, quote=True)
 	conf.define('VERSION', VERSION, quote=True)
 	conf.define('REVISION', revision or '-1', quote=True)
@@ -116,17 +116,18 @@ def configure(conf):
 	# some more compiler flags
 	conf.env.append_value('CFLAGS', ['-DHAVE_CONFIG_H'])
 	if revision is not None:
-		conf.env.append_value('CFLAGS', ['-g', '-DGEANY_DEBUG'])
+		conf.env.append_value('CFLAGS', ['-g', '-DSVI_DEBUG'])
 	# Scintilla flags
 	conf.env.append_value('CFLAGS', ['-DGTK'])
 	conf.env.append_value('CXXFLAGS',
 		['-DNDEBUG', '-DGTK', '-DSCI_LEXER', '-DG_THREADS_IMPL_NONE'])
 
-	conf.env.append_value( 'CFLAGS', [ '-Wall', '-Wextra', '-std=c99', '-pedantic', ] )
+	conf.env.append_value( 'CFLAGS', [ '-Wall', '-Wextra', '-std=c99',
+		'-pedantic', '-pipe', ] )
 
 	# summary
 	Logs.pprint('BLUE', 'Summary:')
-	conf.msg('Install Geany ' + VERSION + ' in', conf.env['PREFIX'])
+	conf.msg('Install svi ' + VERSION + ' in', conf.env['PREFIX'])
 	conf.msg('Using GTK version', gtk_version)
 	conf.msg('Build with plugin support', conf.options.no_plugins and 'no' or 'yes')
 	conf.msg('Use virtual terminal support', conf.options.no_vte and 'no' or 'yes')

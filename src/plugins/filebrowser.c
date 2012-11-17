@@ -36,7 +36,7 @@ GeanyData *geany_data;
 GeanyFunctions *geany_functions;
 
 
-PLUGIN_VERSION_CHECK(GEANY_API_VERSION)
+PLUGIN_VERSION_CHECK(SVI_API_VERSION)
 
 PLUGIN_SET_INFO(_("File Browser"), _("Adds a file browser tab to the sidebar."), VERSION,
 	_("The Geany developer team"))

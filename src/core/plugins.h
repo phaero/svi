@@ -21,8 +21,8 @@
  */
 
 
-#ifndef GEANY_PLUGINS_H
-#define GEANY_PLUGINS_H
+#ifndef SVI_PLUGINS_H
+#define SVI_PLUGINS_H
 
 #ifdef HAVE_PLUGINS
 

@@ -2979,8 +2979,6 @@ gint document_compare_by_display_name(gconstpointer a, gconstpointer b)
  * @param b @c GeanyDocument**.
  * @warning The arguments take the address of each document pointer.
  * @return Negative value if a < b; zero if a = b; positive value if a > b.
- *
- * @since 0.21 (GEANY_API_VERSION 209)
  */
 gint document_compare_by_tab_order(gconstpointer a, gconstpointer b)
 {
@@ -3008,8 +3006,6 @@ gint document_compare_by_tab_order(gconstpointer a, gconstpointer b)
  * @param b @c GeanyDocument**.
  * @warning The arguments take the address of each document pointer.
  * @return Negative value if a < b; zero if a = b; positive value if a > b.
- *
- * @since 0.21 (GEANY_API_VERSION 209)
  */
 gint document_compare_by_tab_order_reverse(gconstpointer a, gconstpointer b)
 {

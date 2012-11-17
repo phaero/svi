@@ -542,7 +542,7 @@ static GdkPixbuf *get_tag_icon(const gchar *icon_name)
 
 	if (G_UNLIKELY(icon_theme == NULL))
 	{
-		gchar *path = g_strconcat(GEANY_DATADIR, "/icons", NULL);
+		gchar *path = g_strconcat(SVI_DATADIR, "/icons", NULL);
 		gtk_icon_size_lookup(GTK_ICON_SIZE_MENU, &x, &y);
 		icon_theme = gtk_icon_theme_get_default();
 		gtk_icon_theme_append_search_path(icon_theme, path);

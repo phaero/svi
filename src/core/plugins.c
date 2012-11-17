@@ -488,7 +488,7 @@ plugin_check_version(GModule *module)
 	}
 	else
 	{
-		gint result = version_check(GEANY_ABI_VERSION);
+		gint result = version_check(SVI_ABI_VERSION);
 
 		if (result < 0)
 		{
@@ -498,7 +498,7 @@ plugin_check_version(GModule *module)
 				"release of Geany - recompile it.", g_module_name(module));
 			return FALSE;
 		}
-		if (result > GEANY_API_VERSION)
+		if (result > SVI_API_VERSION)
 		{
 			geany_debug("Plugin \"%s\" requires a newer version of Geany (API >= v%d).",
 				g_module_name(module), result);
@@ -956,7 +956,7 @@ load_plugins_from_path(const gchar *path)
 
 static gchar *get_plugin_path(void)
 {
-	return g_strconcat(GEANY_LIBDIR, G_DIR_SEPARATOR_S "geany", NULL);
+	return g_strconcat(SVI_LIBDIR, G_DIR_SEPARATOR_S "svi", NULL);
 }
 
 

@@ -1,5 +1,5 @@
 =============
-Hacking Geany
+Hacking Svi
 =============
 .. contents::
 
@@ -8,7 +8,7 @@ General
 
 About this file
 ---------------
-This file contains information for anyone wanting to work on the Geany
+This file contains information for anyone wanting to work on the Svi
 codebase. You should be aware of the open source licenses used - see
 the README file or the documentation. It is reStructuredText; the
 source file is HACKING. You can generate hacking.html by running ``make
@@ -30,8 +30,6 @@ Plugin API documentation
 You can generate documentation for the plugin API using the doxygen
 tool. Run ``make api-doc`` in the doc subdirectory. The documentation
 will be output to doc/reference/index.html.
-Alternatively you can view the API documentation online at
-http://www.geany.org/manual/reference/.
 
 Patches
 -------
@@ -69,7 +67,7 @@ See also the 'Building on Windows' document on the website.
 File organization
 -----------------
 callbacks.c is just for Glade callbacks.
-Avoid adding code to geany.h if it will fit better elsewhere.
+Avoid adding code to svi.h if it will fit better elsewhere.
 See the top of each ``src/*.c`` file for a brief description of what
 it's for.
 
@@ -82,7 +80,7 @@ the existing elements stay in place - this will keep the ABI stable.
 
 .. warning::
 
-    Some structs like GeanyCallback cannot be appended to without
+    Some structs like SviCallback cannot be appended to without
     breaking the ABI because they are used to declare structs by
     plugins, not just for accessing struct members through a pointer.
     Normally structs should never be allocated by plugins.
@@ -95,9 +93,9 @@ not load and they must be rebuilt. An API change means that some plugins
 might not build correctly.
 
 If you're reordering or changing existing elements of structs that are
-used as part of the plugin API, you must increment GEANY_ABI_VERSION
+used as part of the plugin API, you must increment SVI_ABI_VERSION
 in plugindata.h. This is usually not needed if you're just appending
-fields to structs. The GEANY_API_VERSION value should be incremented
+fields to structs. The SVI_API_VERSION value should be incremented
 for any changes to the plugin API, including appending elements.
 
 If you're in any doubt when making changes to plugin API code, just ask us.
@@ -121,24 +119,14 @@ Doc-comments
 
 Glade
 -----
-Add user-interface widgets to the Glade 3 file ``data/geany.glade``.
+Add user-interface widgets to the Glade 3 file ``data/svi.glade``.
 Callbacks for the user-interface should go in ``src/callbacks.c``.
 
 GTK versions & API documentation
 --------------------------------
-Geany requires GTK >= 2.16 and GLib >= 2.20. API symbols from newer
+Svi requires GTK >= 2.16 and GLib >= 2.20. API symbols from newer
 GTK/GLib versions should be avoided or made optional to keep the source
 code building on older systems.
-
-The official GTK 2.16 API documentation may not be available online
-anymore, so we put it on http://www.geany.org/manual/gtk/. There
-is also a tarball with all available files for download and use with
-devhelp.
-
-Using the 2.16 API documentation of the GTK libs (including GLib, GDK
-and Pango) has the advantages that you don't get confused by any
-newer API additions and you don't have to take care about whether
-you can use them or not.
 
 Coding
 ------
@@ -184,7 +172,7 @@ Style
   Note the documentation files use (4) spaces instead, so you may want
   to use the 'Detect from file' indent pref.
 * Do not add whitespace at the end of lines, this adds to commit noise.
-  When editing with Geany set preference files->Strip trailing spaces
+  When editing with Svi set preference files->Strip trailing spaces
   and tabs.
 * Use the multiline comment ``/* */`` to comment small blocks of code,
   functions descriptions or longer explanations of code, etc. C++ single
@@ -328,7 +316,7 @@ Example::
 Testing
 -------
 * Run with ``-v`` to print any debug messages.
-* You can use a second instance (``geany -i``).
+* You can use a second instance (``svi -i``).
 * To check first-run behaviour, use an alternate config directory by
   passing ``-c some_dir`` (but make sure the directory is clean first).
 * For debugging tips, see `GDB`_.
@@ -353,31 +341,25 @@ shortly after one is made. See also scintilla/README.
 Tagmanager was originally taken from Anjuta 1.2.2, and parts of it
 (notably c.c) have been merged from later versions of Anjuta and
 CTags. The independent Tagmanager library itself ceased development
-before Geany was started. It's source code parsing is mostly taken from
+before Svi was started. It's source code parsing is mostly taken from
 Exuberant CTags (see http://ctags.sf.net). If appropriate it's good to
 pass language parser changes back to the CTags project.
 
-
-Notes
-=====
-Some of these notes below are brief (or maybe incomplete) - please
-contact the geany-devel mailing list for more information.
-
 Using pre-defined autotools values
 ----------------------------------
-When you are use macros supplied by the autotools like GEANY_PREFIX,
-GEANY_LIBDIR, GEANY_DATADIR and GEANY_LOCALEDIR be aware that these
-might not be static strings when Geany is configured with
+When you are use macros supplied by the autotools like SVI_PREFIX,
+SVI_LIBDIR, SVI_DATADIR and SVI_LOCALEDIR be aware that these
+might not be static strings when Svi is configured with
 --enable-binreloc. Then these macros will be replaced by function calls
 (in src/prefix.h). So, don't use anything like
-printf("Prefix: " GEANY_PREFIX); but instead use
-printf("Prefix: %s", GEANY_PREFIX);
+printf("Prefix: " SVI_PREFIX); but instead use
+printf("Prefix: %s", SVI_PREFIX);
 
 Adding a source file foo.[hc] in src/ or plugins/
 -------------------------------------------------
 * Add foo.c, foo.h to SRCS in path/Makefile.am.
 * Add foo.o to OBJS in path/makefile.win32.
-* Add path/foo.c to geany_sources in wscript.
+* Add path/foo.c to svi_sources in wscript.
 * Add path/foo.c to po/POTFILES.in (for string translation).
 
 Adding a filetype
@@ -385,8 +367,8 @@ Adding a filetype
 You can add a filetype without syntax highlighting or tag parsing, but
 check to see if those features have been written in other projects first.
 
-* Add GEANY_FILETYPES_FOO to filetypes.h.
-* Initialize GEANY_FILETYPES_FOO in init_builtin_filetypes() of
+* Add SVI_FILETYPES_FOO to filetypes.h.
+* Initialize SVI_FILETYPES_FOO in init_builtin_filetypes() of
   filetypes.c. You should use filetype_make_title() to avoid a
   translation whenever possible.
 * Update data/filetype_extensions.conf.
@@ -487,7 +469,7 @@ SCLEX_CPP), update document_update_tags() in document.c.
 
 Adding a TagManager parser
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-This assumes the filetype for Geany already exists.
+This assumes the filetype for Svi already exists.
 
 First write or find a CTags compatible parser, foo.c. Note that there
 are some language patches for CTags at:
@@ -496,20 +478,14 @@ http://sf.net/projects/ctags - see the tracker.
 (You can also try the Anjuta project's tagmanager codebase.)
 
 .. note::
-    From Geany 1.22 GLib's GRegex engine is used instead of POSIX
-    regex, unlike CTags. It should be close enough to POSIX to work
-    OK.
-    We no longer support regex parsers with the "b" regex flag
-    option set and Geany will print debug warnings if it's used.
-    CTags supports it but doesn't currently (2011) include any
-    parsers that use it. It should be easy to convert to extended
-    regex syntax anyway.
+    GLib's GRegex engine is used instead of POSIX regex, unlike CTags.
+    It should be close enough to POSIX to work OK.
 
 Method
 ``````
 * Add foo.c to SRCS in Makefile.am.
 * Add foo.o to OBJS in makefile.win32.
-* Add path/foo.c to geany_sources in wscript.
+* Add path/foo.c to svi_sources in wscript.
 * Add Foo to parsers.h & fill in comment with parser number for foo.
 
 In foo.c:
@@ -517,7 +493,7 @@ Edit FooKinds 3rd column to match a s_tag_type_names string in tm_tag.c.
 (You may want to make the symbols.c change before doing this).
 
 In filetypes.c, init_builtin_filetypes():
-Set filetypes[GEANY_FILETYPES_FOO].lang = foo's parser number.
+Set filetypes[SVI_FILETYPES_FOO].lang = foo's parser number.
 
 In symbols.c:
 Unless your parser uses C-like tag type kinds, update
@@ -532,7 +508,7 @@ Stop on warnings
 ^^^^^^^^^^^^^^^^
 When a GLib or GTK warning is printed, often you want to get a
 backtrace to find out what code caused them. You can do that with the
-``--g-fatal-warnings`` argument, which will abort Geany on the first
+``--g-fatal-warnings`` argument, which will abort Svi on the first
 warning it receives.
 
 But for ordinary testing, you don't always want your editor to abort
@@ -545,7 +521,7 @@ Running with batch commands
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Use::
 
-    $ gdb src/geany -x gdb-commands
+    $ gdb src/svi -x gdb-commands
 
 Where ``gdb-commands`` is a file with the following lines::
 
@@ -557,11 +533,11 @@ Where ``gdb-commands`` is a file with the following lines::
 Loading a plugin
 ^^^^^^^^^^^^^^^^
 This is useful so you can load plugins without installing them first.
-Alternatively you can use a symlink in ~/.config/geany/plugins or
-$prefix/lib/geany (where $prefix is /usr/local by default).
+Alternatively you can use a symlink in ~/.config/svi/plugins or
+$prefix/lib/svi (where $prefix is /usr/local by default).
 
-The gdb session below was run from the toplevel Geany source directory.
-Start normally with e.g. "gdb src/geany".
+The gdb session below was run from the toplevel svi source directory.
+Start normally with e.g. "gdb src/svi".
 Type 'r' to run.
 Press Ctrl-C from the gdb window to interrupt program execution.
 
@@ -585,20 +561,20 @@ Example::
 Building Plugins
 ^^^^^^^^^^^^^^^^
 
-The geany-plugins autotools script automatically detects the
-installed system Geany and builds the plugins against that.
+The svi-plugins autotools script automatically detects the
+installed system Svi and builds the plugins against that.
 
-To use plugins with a development version of Geany built with
+To use plugins with a development version of Svi built with
 a different prefix, the plugins will need to be compiled against
 that version if the ABI has changed.
 
-To do this you need to specify both --prefix and --with-geany-libdir
+To do this you need to specify both --prefix and --with-svi-libdir
 to the plugin configure.  Normally the plugin prefix is the
-same as the Geany prefix to keep plugins with the version of Geany
-that they are compiled against, and with-geany-libdir is the Geany
+same as the Svi prefix to keep plugins with the version of Svi
+that they are compiled against, and with-svi-libdir is the Svi
 prefix/lib.
 
 Whilst it is possible for the plugin prefix to be different to
 the prefix of the libdir (which is why there are two settings),
-it is probably better to keep the version of Geany and its plugins
+it is probably better to keep the version of Svi and its plugins
 together.

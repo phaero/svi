@@ -26,12 +26,12 @@
  * For detailed documentation of the plugin system please read the plugin
  * API documentation.
  **/
-/* Note: Remember to increment GEANY_API_VERSION (and GEANY_ABI_VERSION if necessary)
+/* Note: Remember to increment SVI_API_VERSION (and SVI_ABI_VERSION if necessary)
  * when making changes (see 'Keeping the plugin ABI stable' in the HACKING file). */
 
 
-#ifndef GEANY_PLUGINDATA_H
-#define GEANY_PLUGINDATA_H
+#ifndef SVI_PLUGINDATA_H
+#define SVI_PLUGINDATA_H
 
 /* Compatibility for sharing macros between API and core.
  * First include geany.h, then plugindata.h, then other API headers. */
@@ -46,21 +46,21 @@
  * whenever any plugin data types are modified or appended to.
  *
  * You can protect code that needs a higher API than e.g. 200 with:
- * @code #if GEANY_API_VERSION >= 200
+ * @code #if SVI_API_VERSION >= 200
  * 	some_newer_function();
  * #endif @endcode
  *
  * @warning You should not test for values below 200 as previously
- * @c GEANY_API_VERSION was defined as an enum value, not a macro.
+ * @c SVI_API_VERSION was defined as an enum value, not a macro.
  */
-#define GEANY_API_VERSION 214
+#define SVI_API_VERSION 214
 
 /** The Application Binary Interface (ABI) version, incremented whenever
  * existing fields in the plugin data types have to be changed or reordered.
  * Changing this forces all plugins to be recompiled before Geany can load them. */
 /* This should usually stay the same if fields are only appended, assuming only pointers to
  * structs and not structs themselves are declared by plugins. */
-#define GEANY_ABI_VERSION 69
+#define SVI_ABI_VERSION 69
 
 
 /** Defines a function to check the plugin is safe to load.
@@ -68,13 +68,13 @@
  * - Geany ABI data types are compatible with this plugin.
  * - Geany sources provide the required API for this plugin.
  * @param api_required The minimum API number your plugin requires.
- * Look at the source for the value of @c GEANY_API_VERSION to use if you
+ * Look at the source for the value of @c SVI_API_VERSION to use if you
  * want your plugin to require the current Geany version on your machine.
  * You should update this value when using any new API features. */
 #define PLUGIN_VERSION_CHECK(api_required) \
 	gint plugin_version_check(gint abi_ver) \
 	{ \
-		if (abi_ver != GEANY_ABI_VERSION) \
+		if (abi_ver != SVI_ABI_VERSION) \
 			return -1; \
 		return (api_required); \
 	}
