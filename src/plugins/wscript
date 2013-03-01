@@ -10,7 +10,7 @@ Copyright (c) 2012 Johan Segolsson. All rights reserved.
 
 def build( bld ):
 	# geanyfunctions.h
-	bld.new_task_gen(
+	bld(
 			source = ['genapi.py', '../core/plugins.c'],
 			name = 'geanyfunctions.h',
 			before = ['c', 'cxx'],

@@ -9,7 +9,7 @@ Copyright (c) 2012 Johan Segolsson. All rights reserved.
 """
 
 def build( bld ):
-	bld.new_task_gen(
+	bld(
 			source = 'geany.pc.in',
 			dct = {
 				'VERSION' : bld.env[ 'VERSION' ],
@@ -24,7 +24,7 @@ def build( bld ):
 		)
 
 	if bld.env['INTLTOOL']:
-		bld.new_task_gen(
+		bld(
 				features = 'intltool_in',
 				source = 'geany.desktop.in',
 				podir='../po',
@@ -32,7 +32,7 @@ def build( bld ):
 				install_path = '${DATADIR}/applications'
 			)
 
-	bld.new_task_gen(
+	bld(
 			features = 'subst',
 			source = 'geany.spec.in',
 			target = 'geany.spec',

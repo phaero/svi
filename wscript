@@ -136,9 +136,9 @@ def configure(conf):
 
 
 def options(opt):
-	opt.tool_options('compiler_cc')
-	opt.tool_options('compiler_cxx')
-	opt.tool_options('intltool')
+	opt.load('compiler_cc')
+	opt.load('compiler_cxx')
+	opt.load('intltool')
 
 	# Features
 	opt.add_option('--disable-plugins', action='store_true', default=False,
@@ -289,7 +289,7 @@ def _get_git_rev(conf):
 
 def _load_intltool_if_available(conf):
 	try:
-		conf.check_tool('intltool')
+		conf.load('intltool')
 		if 'LINGUAS' in os.environ:
 			conf.env['LINGUAS'] = os.environ['LINGUAS']
 	except WafError:

@@ -12,7 +12,7 @@ import os
 
 def build( bld ):
 	# Doxyfile
-	bld.new_task_gen(
+	bld(
 			features = 'subst',
 			source = 'Doxyfile.in',
 			target = 'Doxyfile',
@@ -20,7 +20,7 @@ def build( bld ):
 			dct = {'VERSION' : bld.env['VERSION'] }
 		)
 
-	bld.new_task_gen(
+	bld(
 			features = 'subst',
 			source = 'geany.1.in',
 			target = 'geany.1',

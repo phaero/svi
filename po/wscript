@@ -20,7 +20,7 @@ def build( bld ):
 
 	# Translations
 	if bld.env['INTLTOOL']:
-		bld.new_task_gen(
+		bld(
 				features = ['linguas', 'intltool_po'],
 				podir = '.',
 				install_path = '${LOCALEDIR}',
